@@ -22,8 +22,8 @@ public class Loan {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @OneToOne
-    @JoinColumn(name = "COPY_ID", nullable = false)
+    @ManyToOne
+    @JoinColumn(name = "COPY_ID", nullable = false, referencedColumnName = "id")
     private BookCopy bookcopy;
 
     @Column(name = "DATE_LOANED", nullable = false)
@@ -32,7 +32,7 @@ public class Loan {
     @Column(name = "DATE_RETURNED")
     private Date dateReturned;
 
-    @OneToOne
-    @JoinColumn(name = "USER_ID")
+    @ManyToOne
+    @JoinColumn(name = "USER_ID", referencedColumnName = "id")
     private User user;
 }

@@ -19,7 +19,7 @@ public class BookCopy {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "ISBN")
     private Book book;
 

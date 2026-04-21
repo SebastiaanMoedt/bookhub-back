@@ -19,14 +19,14 @@ public class WaitingList {
     @Id
     private Integer id;
 
-    @OneToOne
-    @JoinColumn(name = "id")
+    @ManyToOne
+    @JoinColumn(name = "USER_ID", referencedColumnName = "id")
     private User user;
 
     @Column(name = "DATE_ADDED")
     private Date dateAdded;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "isbn")
     private Book book;
 }
