@@ -1,3 +1,11 @@
 spring:
   application:
     name: bookhub-back
+  datasource:
+    url: jdbc:sqlserver://localhost;databasename=BOOKHUB;integratedSecurity=false;encrypt=false;trustServerCertificate=false
+    username: sa
+    password: Pa$$w0rd
+
+  jpa:
+    show-sql: true
+    hibernate.ddl-auto: update

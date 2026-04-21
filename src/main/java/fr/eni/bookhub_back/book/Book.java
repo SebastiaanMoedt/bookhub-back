@@ -1,14 +1,16 @@
 package fr.eni.bookhub_back.book;
 
 import fr.eni.bookhub_back.book.bookcopy.BookCopy;
+import fr.eni.bookhub_back.book.category.Category;
 import fr.eni.bookhub_back.review.Review;
-import fr.eni.bookhub_back.user.userwaitingforbook.UserWaitingForBook;
+import fr.eni.bookhub_back.waitinglist.WaitingList;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Data
@@ -16,14 +18,33 @@ import java.util.List;
 @AllArgsConstructor
 @Builder
 
-@Document(collection="book")
+@Entity
+@Table(name = "BOOK")
 public class Book {
+
+    @Id
+    @Column(name = "ISBN", nullable = false)
     private String isbn;
+
+    @Column(name = "TITLE", nullable = false)
     private String title;
+
+    @Column(name = "AUTHOR", nullable = false)
     private String author;
-    private String category;
+
+    @JoinColumn(name = "CATEGORY")
+    @ManyToOne
+    private Category category;
+
+    @Column(name = "COVER_URL")
     private String coverUrl;
-    private List<Review> reviews;
-    private List<UserWaitingForBook> waitingList;
-    private List<BookCopy> copies;
+
+    @OneToMany(mappedBy = "id")
+    private @Builder.Default List<BookCopy> bookCopies = new ArrayList<>();
+
+    @OneToMany(mappedBy = "id")
+    private @Builder.Default List<Review> reviews = new ArrayList<>();
+
+    @OneToMany(mappedBy = "id")
+    private @Builder.Default List<WaitingList> waitingList = new ArrayList<>();
 }
