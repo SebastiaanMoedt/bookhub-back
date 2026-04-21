@@ -23,6 +23,9 @@ import java.util.List;
 public class Book {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
+
     @Column(name = "ISBN", nullable = false)
     private String isbn;
 
@@ -38,6 +41,9 @@ public class Book {
 
     @Column(name = "COVER_URL")
     private String coverUrl;
+
+    @Column(name = "DESCRIPTION", columnDefinition = "VARCHAR(MAX)")
+    private String description;
 
     @OneToMany(mappedBy = "id")
     private @Builder.Default List<BookCopy> bookCopies = new ArrayList<>();
