@@ -36,7 +36,7 @@ public class Book {
     private String author;
 
     @JoinColumn(name = "CATEGORY")
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     private Category category;
 
     @Column(name = "COVER_URL")

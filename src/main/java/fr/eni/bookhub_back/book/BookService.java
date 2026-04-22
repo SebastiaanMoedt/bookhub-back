@@ -5,12 +5,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.Optional;
 
 @Service
 public class BookService {
@@ -18,18 +17,15 @@ public class BookService {
     @Autowired
     private BookRepository bookRepository;
 
-    public ResponseEntity<ServiceResponse<List<Book>>> findBooksByPage(int page) {
-
-        int size = 20;
+    public ResponseEntity<?> findBooks(int page, int size, String sortBy) {
         try {
-            Pageable pageable = PageRequest.of(page, size);
+            Pageable pageable = PageRequest.of(page, size, Sort.by(sortBy));
             Page<Book> pageBook = bookRepository.findAll(pageable);
-            System.out.println(pageBook);
-            ServiceResponse<List<Book>> response =
-                    new ServiceResponse<>("BOOKS_FOUND", "Livres trouvés", pageBook.getContent());
+            ServiceResponse<?> response =
+                    new ServiceResponse<>("BOOKS_FOUND", "Livres trouvés", pageBook);
             return ResponseEntity.ok(response);
         } catch (RuntimeException e) {
-            ServiceResponse<List<Book>> response =
+            ServiceResponse<Page<Book>> response =
                     new ServiceResponse<>("BOOKS_NOT_FOUND", e.getMessage());
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
         }
