@@ -55,5 +55,5 @@ public class User {
     private @Builder.Default Role role = Role.USER;
 
     @OneToMany(mappedBy = "user")
-    private @Builder.Default List<Loan> loaned = new ArrayList<>();
+    private @Builder.Default List<Loan> loans = new ArrayList<>();
 }
