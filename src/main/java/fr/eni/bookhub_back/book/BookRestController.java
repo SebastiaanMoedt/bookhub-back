@@ -1,8 +1,16 @@
 package fr.eni.bookhub_back.book;
+import fr.eni.bookhub_back.common.ServiceResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.ObjectUtils;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+import java.util.Optional;
 
 @CrossOrigin
 @RestController
@@ -21,10 +29,13 @@ public class BookRestController {
 
         }
 
-        @GetMapping("/detail/{isbn}")
-        public ResponseEntity<?> findBookByISBN(@PathVariable String isbn){
-            return bookService.findBookByISBN(isbn);
-        }
+    @GetMapping("/detail/{isbn}")
+    public ResponseEntity<?> findBookByISBN(@PathVariable String isbn) {
+        return bookService.findBookByISBN(isbn);
+    }
 
-
+    @PostMapping("/new")
+    public ResponseEntity<ServiceResponse<Book>> saveBook(@Valid @RequestBody Book book) {
+        return bookService.createBook(book);
+    }
 }
