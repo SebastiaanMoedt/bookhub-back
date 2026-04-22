@@ -7,6 +7,9 @@ import org.slf4j.LoggerFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -27,8 +30,7 @@ public class BookService {
 
     private final static Logger logger = LoggerFactory.getLogger(BookService.class);
 
-    public ResponseEntity<ServiceResponse<List<Book>>> findBooksByPage(int page) {
-
+    public ResponseEntity<?> findBooks(int page, int size, String sortBy) {
         try {
             Pageable pageable = PageRequest.of(page, size, Sort.by(sortBy));
             Page<Book> pageBook = bookRepository.findAll(pageable);

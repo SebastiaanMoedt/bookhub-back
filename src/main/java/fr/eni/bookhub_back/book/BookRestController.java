@@ -1,5 +1,8 @@
 package fr.eni.bookhub_back.book;
 import fr.eni.bookhub_back.common.ServiceResponse;
+
+import fr.eni.bookhub_back.common.ServiceResponse;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -17,8 +20,8 @@ import java.util.Optional;
 @RequestMapping("/api/books")
 public class BookRestController {
 
-        @Autowired
-        private BookService bookService;
+    @Autowired
+    private BookService bookService;
 
         @GetMapping
         public ResponseEntity<?> allBooks(@RequestParam(name = "page", defaultValue = "0") Integer page,
@@ -29,10 +32,10 @@ public class BookRestController {
 
         }
 
-    @GetMapping("/detail/{isbn}")
-    public ResponseEntity<?> findBookByISBN(@PathVariable String isbn) {
-        return bookService.findBookByISBN(isbn);
-    }
+        @GetMapping("/{isbn}")
+        public ResponseEntity<?> findBookByISBN(@PathVariable String isbn){
+            return bookService.findBookByISBN(isbn);
+        }
 
     @PostMapping("/new")
     public ResponseEntity<ServiceResponse<Book>> saveBook(@Valid @RequestBody Book book) {
