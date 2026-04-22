@@ -23,7 +23,7 @@ public class BookRestController {
 
         }
 
-        @GetMapping("/detail/{isbn}")
+        @GetMapping("/{isbn}")
         public ResponseEntity<?> findBookByISBN(@PathVariable String isbn){
             return bookService.findBookByISBN(isbn);
         }
