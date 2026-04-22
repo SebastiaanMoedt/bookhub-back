@@ -36,7 +36,7 @@ public class Book {
     private String author;
 
     @JoinColumn(name = "CATEGORY")
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private Category category;
 
     @Column(name = "COVER_URL")
@@ -45,12 +45,12 @@ public class Book {
     @Column(name = "DESCRIPTION", columnDefinition = "VARCHAR(MAX)")
     private String description;
 
-    @OneToMany(mappedBy = "id")
+    @OneToMany(mappedBy = "id", fetch = FetchType.LAZY)
     private @Builder.Default List<BookCopy> bookCopies = new ArrayList<>();
 
-    @OneToMany(mappedBy = "id")
+    @OneToMany(mappedBy = "id", fetch = FetchType.LAZY)
     private @Builder.Default List<Review> reviews = new ArrayList<>();
 
-    @OneToMany(mappedBy = "id")
+    @OneToMany(mappedBy = "id", fetch = FetchType.LAZY)
     private @Builder.Default List<WaitingList> waitingList = new ArrayList<>();
 }

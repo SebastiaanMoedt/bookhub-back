@@ -24,6 +24,7 @@ public class BookService {
         try {
             Pageable pageable = PageRequest.of(page, size);
             Page<Book> pageBook = bookRepository.findAll(pageable);
+            System.out.println(pageBook);
             ServiceResponse<List<Book>> response =
                     new ServiceResponse<>("BOOKS_FOUND", "Livres trouvés", pageBook.getContent());
             return ResponseEntity.ok(response);
