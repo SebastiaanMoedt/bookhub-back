@@ -26,7 +26,7 @@ public class User {
     private Integer id;
 
     @NotBlank
-    @Size(max = 20, message = "user.username.size-error}")
+    @Size(max = 20, message = "{user.username.size-error}")
     @Column(name = "USERNAME", nullable = false)
     private String username;
 
@@ -34,7 +34,7 @@ public class User {
     private String password;
 
     @NotBlank(message = "{user.email.blank-error}")
-    @Size(max = 255, message = "user.email.size-error}")
+    @Size(max = 255, message = "{user.email.size-error}")
     @Email(message = "{user.email.pattern-error}")
     @Column(name = "EMAIL", length = 255, nullable = false, unique = true) // unique = true pour les clés secondaires
     private String email;
