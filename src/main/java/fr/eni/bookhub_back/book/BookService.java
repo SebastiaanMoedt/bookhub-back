@@ -2,9 +2,6 @@ package fr.eni.bookhub_back.book;
 
 import fr.eni.bookhub_back.common.ServiceResponse;
 import lombok.AllArgsConstructor;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -25,17 +22,15 @@ public class BookService {
 
     private final static Logger logger = LoggerFactory.getLogger(BookService.class);
 
-    public ResponseEntity<ServiceResponse<List<Book>>> findBooksByPage(int page) {
-
-        int size = 20;
+    public ResponseEntity<?> findBooks(int page, int size, String sortBy) {
         try {
-            Pageable pageable = PageRequest.of(page, size);
+            Pageable pageable = PageRequest.of(page, size, Sort.by(sortBy));
             Page<Book> pageBook = bookRepository.findAll(pageable);
-            ServiceResponse<List<Book>> response =
-                    new ServiceResponse<>("BOOKS_FOUND", "Livres trouvés", pageBook.getContent());
+            ServiceResponse<?> response =
+                    new ServiceResponse<>("BOOKS_FOUND", "Livres trouvés", pageBook);
             return ResponseEntity.ok(response);
         } catch (RuntimeException e) {
-            ServiceResponse<List<Book>> response =
+            ServiceResponse<Page<Book>> response =
                     new ServiceResponse<>("BOOKS_NOT_FOUND", e.getMessage());
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
         }

@@ -3,15 +3,8 @@ package fr.eni.bookhub_back.book;
 import fr.eni.bookhub_back.common.ServiceResponse;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
-import org.springframework.util.ObjectUtils;
-import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @CrossOrigin
 @RestController
@@ -21,20 +14,19 @@ public class BookRestController {
     @Autowired
     private BookService bookService;
 
-    @GetMapping
-    public ResponseEntity<ServiceResponse<List<Book>>> allBooksPage0() {
-        return bookService.findBooksByPage(0);
-    }
+        @GetMapping
+        public ResponseEntity<?> allBooks(@RequestParam(name = "page", defaultValue = "0") Integer page,
+                                          @RequestParam(name = "size", defaultValue = "20") Integer size,
+                                          @RequestParam(name = "sort", defaultValue = "title") String sort) {
+            return bookService.findBooks(page, size, sort);
 
-    @GetMapping("/{page}")
-    public ResponseEntity<?> allBooks(@PathVariable(required = false) Integer page) {
-        return bookService.findBooksByPage(page);
-    }
 
-    @GetMapping("/detail/{isbn}")
-    public ResponseEntity<?> findBookByISBN(@PathVariable String isbn) {
-        return bookService.findBookByISBN(isbn);
-    }
+        }
+
+        @GetMapping("/detail/{isbn}")
+        public ResponseEntity<?> findBookByISBN(@PathVariable String isbn){
+            return bookService.findBookByISBN(isbn);
+        }
 
     @PostMapping("/new")
     public ResponseEntity<ServiceResponse<Book>> saveBook(@Valid @RequestBody Book book) {
