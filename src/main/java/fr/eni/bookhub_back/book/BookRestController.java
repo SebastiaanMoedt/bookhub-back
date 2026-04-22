@@ -1,4 +1,5 @@
 package fr.eni.bookhub_back.book;
+import fr.eni.bookhub_back.common.ServiceResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -17,33 +18,21 @@ import java.util.Optional;
 public class BookRestController {
 
         @Autowired
-        private BookRepository bookRepository;
+        private BookService bookService;
 
         @GetMapping
-        public ResponseEntity<?> allBooksPage0(){
-            int size = 20;
-            Pageable pageable = PageRequest.of(0, size);
-            Page<Book> pageBook = bookRepository.findAll(pageable);
-
-            return ResponseEntity.ok(pageBook.getContent());
+        public ResponseEntity<ServiceResponse<List<Book>>> allBooksPage0(){
+            return bookService.findBooksByPage(0);
         }
-
         @GetMapping("/{page}")
         public ResponseEntity<?> allBooks(@PathVariable(required = false) Integer page) {
-            int size = 20;
-            Pageable pageable = PageRequest.of(page, size);
-            Page<Book> pageBook = bookRepository.findAll(pageable);
-
-            return ResponseEntity.ok(pageBook.getContent());
+            return bookService.findBooksByPage(page);
         }
 
         @GetMapping("/detail/{isbn}")
         public ResponseEntity<?> findBookByISBN(@PathVariable String isbn){
-            Optional<Book> book = bookRepository.findBookByIsbn(isbn);
-            if (book.isEmpty()){
-                throw new RuntimeException("this book doesn't exist");
-            }
-            return ResponseEntity.ok(book.get());
+            return bookService.findBookByISBN(isbn);
         }
+
 
 }
