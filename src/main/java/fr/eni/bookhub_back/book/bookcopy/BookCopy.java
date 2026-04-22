@@ -15,12 +15,13 @@ import lombok.NoArgsConstructor;
 @Entity
 @Table(name = "BOOK_COPY")
 public class BookCopy {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     @ManyToOne
-    @JoinColumn(name = "ISBN")
+    @JoinColumn(name = "BOOK_ID", referencedColumnName = "id")
     private Book book;
 
     @Column(name = "IS_AVAILABLE")

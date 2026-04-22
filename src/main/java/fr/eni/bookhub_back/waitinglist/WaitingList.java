@@ -27,6 +27,6 @@ public class WaitingList {
     private Date dateAdded;
 
     @ManyToOne
-    @JoinColumn(name = "isbn")
+    @JoinColumn(name = "BOOK_ID", referencedColumnName = "id")
     private Book book;
 }

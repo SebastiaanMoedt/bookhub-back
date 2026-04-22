@@ -28,7 +28,7 @@ public class Review {
 
     @ManyToOne
     @JoinColumn(nullable = false)
-    @PrimaryKeyJoinColumn(name = "ISBN")
+    @PrimaryKeyJoinColumn(name = "BOOK_ID", referencedColumnName = "id")
     private Book book;
 
     @Column(name = "SCORE")

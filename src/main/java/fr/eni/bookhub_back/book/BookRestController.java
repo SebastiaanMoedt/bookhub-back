@@ -18,12 +18,12 @@ public class BookRestController {
         private BookRepository bookRepository;
 
         @GetMapping("/{page}")
-        public ResponseEntity<?> allBooks(@RequestParam(name = "page", defaultValue = "0") Integer page) {
+        public ResponseEntity<?> allBooks(@PathVariable @RequestParam(name = "page", defaultValue = "0") Integer page) {
 
-            Integer size = 2;
+            int size = 2;
             Pageable pageable = PageRequest.of(page, size);
-            Page<Book> pageUser = bookRepository.findAll(pageable);
+            Page<Book> pageBook = bookRepository.findAll(pageable);
 
-            return ResponseEntity.ok(pageUser.getContent());
+            return ResponseEntity.ok(pageBook.getContent());
         }
 }
