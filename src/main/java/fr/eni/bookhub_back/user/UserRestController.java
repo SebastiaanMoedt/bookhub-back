@@ -1,5 +1,7 @@
 package fr.eni.bookhub_back.user;
 import fr.eni.bookhub_back.common.ServiceResponse;
+import jakarta.validation.Valid;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,19 +18,19 @@ public class UserRestController {
         this.userService = userService;
     }
 
-//    @PostMapping("/api/auth/register")
-//    public ResponseEntity<ServiceResponse<User>> register(@Valid @RequestBody User user) {
-//        try {
-//            userService.save(user);
-//            ServiceResponse<User> response =
-//                    new ServiceResponse<>("USER_CREATED", "{user.created}", user);
-//            return ResponseEntity.ok(response);
-//        } catch (RuntimeException e){
-//            ServiceResponse<User> response =
-//                    new ServiceResponse<>("ERROR", e.getMessage());
-//            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
-//        }
-//    }
+    @PostMapping("/api/auth/register")
+    public ResponseEntity<ServiceResponse<User>> register(@Valid @RequestBody User user) {
+        try {
+            userService.save(user);
+            ServiceResponse<User> response =
+                    new ServiceResponse<>("USER_CREATED", "{user.created}", user);
+            return ResponseEntity.ok(response);
+        } catch (RuntimeException e){
+            ServiceResponse<User> response =
+                    new ServiceResponse<>("ERROR", e.getMessage());
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+        }
+    }
 
 //    @PostMapping("/api/auth/login")
 //    public ResponseEntity<ServiceResponse<User>> login(@Valid @RequestBody User user) {
