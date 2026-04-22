@@ -26,4 +26,13 @@ public class BookRestController {
 
             return ResponseEntity.ok(pageBook.getContent());
         }
+
+        @GetMapping("/detail/{isbn}")
+        public ResponseEntity<?> findBookByISBN(@PathVariable String isbn){
+            Optional<Book> book = bookRepository.findBookByIsbn(isbn);
+            if (book.isEmpty()){
+                throw new RuntimeException("this book doesn't exist");
+            }
+            return ResponseEntity.ok(book.get());
+        }
 }
