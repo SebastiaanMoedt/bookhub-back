@@ -26,7 +26,7 @@ public class Book {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @Column(name = "ISBN", nullable = false)
+    @Column(name = "ISBN", nullable = false, unique = true)
     private String isbn;
 
     @Column(name = "TITLE", nullable = false)
@@ -45,12 +45,12 @@ public class Book {
     @Column(name = "DESCRIPTION", columnDefinition = "VARCHAR(MAX)")
     private String description;
 
-    @OneToMany(mappedBy = "id", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "book", fetch = FetchType.LAZY)
     private @Builder.Default List<BookCopy> bookCopies = new ArrayList<>();
 
-    @OneToMany(mappedBy = "id", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "book", fetch = FetchType.LAZY)
     private @Builder.Default List<Review> reviews = new ArrayList<>();
 
-    @OneToMany(mappedBy = "id", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "book", fetch = FetchType.LAZY)
     private @Builder.Default List<WaitingList> waitingList = new ArrayList<>();
 }

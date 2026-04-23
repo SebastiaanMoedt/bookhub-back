@@ -23,7 +23,6 @@ public class Review {
 
     @ManyToOne
     @JoinColumn(nullable = false)
-    @PrimaryKeyJoinColumn(name = "USER_ID")
     private User user;
 
     @ManyToOne
