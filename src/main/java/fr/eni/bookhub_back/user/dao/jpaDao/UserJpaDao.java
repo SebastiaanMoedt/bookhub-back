@@ -18,38 +18,8 @@ public class UserJpaDao implements IUserDao {
     }
 
     @Override
-    public List<User> findAll() {
-        return userRepository.findAll();
-    }
-
-    @Override
     public Optional<User> findByUsername(String username) {
         return userRepository.findByUsername(username);
-    }
-
-    @Override
-    public Optional<User> findByEmail(String email) {
-        return userRepository.findByEmail(email);
-    }
-
-    @Override
-    public Optional<User> findById(Integer id) {
-        return userRepository.findById(id);
-    }
-
-    @Override
-    public Optional<User> findByUsernameOrEmail(String username, String email) {
-        return userRepository.findByUsernameOrEmail(username, email);
-    }
-
-    @Override
-    public Optional<User> findByUsernameAndPassword(String username, String password) {
-        return userRepository.findByUsernameAndPassword(username, password);
-    }
-
-    @Override
-    public void deleteByUsername(String username) {
-        userRepository.deleteByUsername(username);
     }
 
     @Override
