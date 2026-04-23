@@ -1,14 +1,12 @@
 package fr.eni.bookhub_back.book;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import fr.eni.bookhub_back.book.bookcopy.BookCopy;
 import fr.eni.bookhub_back.book.category.Category;
 import fr.eni.bookhub_back.review.Review;
 import fr.eni.bookhub_back.waitinglist.WaitingList;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -45,12 +43,4 @@ public class Book {
     @Column(name = "DESCRIPTION", columnDefinition = "VARCHAR(MAX)")
     private String description;
 
-    @OneToMany(mappedBy = "book", fetch = FetchType.LAZY)
-    private @Builder.Default List<BookCopy> bookCopies = new ArrayList<>();
-
-    @OneToMany(mappedBy = "book", fetch = FetchType.LAZY)
-    private @Builder.Default List<Review> reviews = new ArrayList<>();
-
-    @OneToMany(mappedBy = "book", fetch = FetchType.LAZY)
-    private @Builder.Default List<WaitingList> waitingList = new ArrayList<>();
 }
