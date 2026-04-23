@@ -5,9 +5,9 @@ import fr.eni.bookhub_back.locale.LocaleHelper;
 import fr.eni.bookhub_back.user.dao.IUserDao;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -15,56 +15,41 @@ public class UserService {
 
     private final IUserDao userDao;
     private final LocaleHelper lH;
+    private final PasswordEncoder passwordEncoder;
 
-    UserService(IUserDao userDao, LocaleHelper lH) {
+    UserService(IUserDao userDao, LocaleHelper lH, PasswordEncoder passwordEncoder) {
         this.userDao = userDao;
         this.lH = lH;
+        this.passwordEncoder = passwordEncoder;
     }
 
-    public ResponseEntity<ServiceResponse<User>> findById(Integer id) {
-        try{
-            User user = userDao.findById(id).get();
-            ServiceResponse<User> response =
-                    new ServiceResponse<User>("USER_FOUND", lH.i18n("user.found"), user);
-            return ResponseEntity.ok(response);
-        } catch (NumberFormatException e){
-            ServiceResponse<User> response =
-                    new ServiceResponse<User>("USER_ID_FORMAT_ERROR", lH.i18n("user.id.format-error"), null);
-            return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(response);
-        } catch (RuntimeException e) {
-            ServiceResponse<User> response =
-                    new ServiceResponse<User>("ERROR", e.getMessage());
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+    public ResponseEntity<ServiceResponse<User>> login(String username, String password) {
+        Optional<User> userOpt = userDao.findByUsername(username);
+        if (userOpt.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body(new ServiceResponse<>("USER_NOT_FOUND", "User not found", null));
         }
-
-    }
-
-    public List<User> findAll() {
-        return userDao.findAll();
-    }
-
-    public Optional<User> findByUsername(String username) {
-        return userDao.findByUsername(username);
-    }
-
-    public Optional<User> findByEmail(String email) {
-        return userDao.findByEmail(email);
+        User user = userOpt.get();
+        if (!passwordEncoder.matches(password, user.getPassword())) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                    .body(new ServiceResponse<>("INVALID_CREDENTIALS", "Invalid credentials", null));
+        }
+        return ResponseEntity.ok(
+                new ServiceResponse<>("LOGIN_SUCCESS", "Login success", user)
+        );
     }
 
 
-    public Optional<User> findByUsernameOrEmail(String username, String email) {
-        return userDao.findByUsernameOrEmail(username, email);
-    }
-
-    public Optional<User> findByUsernameAndPassword(String username, String password) {
-        return userDao.findByUsernameAndPassword(username, password);
-    }
-
-    public void deleteByUsername(String username) {
-        userDao.deleteByUsername(username);
-    }
-
-    public User save(User user) {
-        return userDao.save(user);
+    public ResponseEntity<ServiceResponse<User>> save(User user) {
+        try {
+            userDao.save(user);
+            ServiceResponse<User> response =
+                    new ServiceResponse<>("USER_CREATED", "{user.created}", user);
+            return ResponseEntity.ok(response);
+        } catch (RuntimeException e){
+            ServiceResponse<User> response =
+                    new ServiceResponse<>("ERROR", e.getMessage());
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+        }
     }
 }
