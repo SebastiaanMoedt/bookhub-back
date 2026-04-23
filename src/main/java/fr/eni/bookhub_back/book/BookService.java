@@ -4,12 +4,6 @@ import fr.eni.bookhub_back.common.ServiceResponse;
 import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import lombok.AllArgsConstructor;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -42,6 +36,11 @@ public class BookService {
                     new ServiceResponse<>("BOOKS_NOT_FOUND", e.getMessage());
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
         }
+    }
+
+    public Optional<Book> findBookObjectByISBN(String isbn){
+        return bookRepository.findBookByIsbn(isbn);
+
     }
 
     public ResponseEntity<ServiceResponse<Book>> findBookByISBN(String isbn) {

@@ -8,6 +8,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.Date;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -32,6 +34,9 @@ public class Review {
     @Column(name = "SCORE")
     private int score;
 
-    @Column(name = "COMMENT")
+    @Column(name = "COMMENT", nullable = false)
     private String comment;
+
+    @Column(name = "DATE_PUBLISHED")
+    private Date datePublished;
 }
