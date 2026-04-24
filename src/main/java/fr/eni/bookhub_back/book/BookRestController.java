@@ -22,7 +22,7 @@ public class BookRestController {
 
     @GetMapping
         public ResponseEntity<?> allBooks(@RequestParam(name = "page", defaultValue = "0") Integer page,
-                                          @RequestParam(name = "size", defaultValue = "10") Integer size,
+                                          @RequestParam(name = "size", defaultValue = "20") Integer size,
                                           @RequestParam(name = "sort", defaultValue = "title") String sort) {
             return bookService.findBooks(page, size, sort);
         }

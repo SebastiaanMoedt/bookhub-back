@@ -1,7 +1,7 @@
 package fr.eni.bookhub_back.waitinglist;
 
 import fr.eni.bookhub_back.book.Book;
-import fr.eni.bookhub_back.user.User;
+import fr.eni.bookhub_back.user.bo.User;
 import jakarta.persistence.*;
 import lombok.*;
 
