@@ -12,6 +12,7 @@ import java.util.Optional;
 
 @CrossOrigin
 @RestController
+@RequestMapping("/api/auth")
 public class UserRestController {
 
     private final UserService userService;
@@ -20,12 +21,12 @@ public class UserRestController {
         this.userService = userService;
     }
 
-    @PostMapping("/api/auth/register")
+    @PostMapping("/register")
     public ResponseEntity<ServiceResponse<User>> register(@Valid @RequestBody User user) {
-        return this.userService.save(user);
+        return this.userService.register(user);
     }
 
-    @PostMapping("/api/auth/login")
+    @PostMapping("/login")
     public ResponseEntity<ServiceResponse<User>> login(@Valid @RequestBody User user) {
         return this.userService.login(user.getUsername(), user.getPassword());
     }
