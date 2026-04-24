@@ -1,7 +1,7 @@
 package fr.eni.bookhub_back.loan;
 
 import fr.eni.bookhub_back.book.bookcopy.BookCopy;
-import fr.eni.bookhub_back.user.User;
+import fr.eni.bookhub_back.user.bo.User;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

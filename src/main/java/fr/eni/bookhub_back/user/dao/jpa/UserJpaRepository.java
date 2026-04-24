@@ -1,5 +1,6 @@
-package fr.eni.bookhub_back.user;
+package fr.eni.bookhub_back.user.dao.jpa;
 
+import fr.eni.bookhub_back.user.bo.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.Optional;
 
