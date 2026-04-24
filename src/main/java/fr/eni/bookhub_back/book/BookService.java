@@ -1,6 +1,7 @@
 package fr.eni.bookhub_back.book;
 
 import fr.eni.bookhub_back.common.ServiceResponse;
+import jakarta.validation.UnexpectedTypeException;
 import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -38,7 +39,7 @@ public class BookService {
         }
     }
 
-    public Optional<Book> findBookObjectByISBN(String isbn){
+    public Optional<Book> findBookObjectByISBN(String isbn) {
         return bookRepository.findBookByIsbn(isbn);
 
     }
@@ -57,29 +58,29 @@ public class BookService {
     }
 
     public ResponseEntity<ServiceResponse<Book>> createBook(Book b) {
-        if (b == null) {
-            ServiceResponse<Book> response = new ServiceResponse<>("BOOK_NULL", "{book.null-error}");
-            return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(response);
-        }
-
-        if (b.getTitle() == null || b.getTitle().isBlank()) {
-            ServiceResponse<Book> response = new ServiceResponse<>("BOOK_TITLE_BLANK", "{book.title.blank-error}");
-            return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(response);
-        }
-
-        if (b.getAuthor() == null || b.getAuthor().isBlank()) {
-            ServiceResponse<Book> response = new ServiceResponse<>("BOOK_AUTHOR_BLANK", "{book.author.blank-error}");
-            return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(response);
-        }
-
-        Optional<Book> optBook = bookRepository.findBookByIsbn(b.getIsbn());
-
-        if (optBook.isPresent()) {
-            ServiceResponse<Book> response = new ServiceResponse<>("BOOK_ALREADY_EXISTS", "{book.isbn-already-exists-error}");
-            return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(response);
-        }
-
         try {
+            if (b == null) {
+                ServiceResponse<Book> response = new ServiceResponse<>("BOOK_NULL", "{book.null-error}");
+                return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(response);
+            }
+
+            if (b.getTitle() == null || b.getTitle().isBlank()) {
+                ServiceResponse<Book> response = new ServiceResponse<>("BOOK_TITLE_BLANK", "{book.title.blank-error}");
+                return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(response);
+            }
+
+            if (b.getAuthor() == null || b.getAuthor().isBlank()) {
+                ServiceResponse<Book> response = new ServiceResponse<>("BOOK_AUTHOR_BLANK", "{book.author.blank-error}");
+                return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(response);
+            }
+
+            Optional<Book> optBook = bookRepository.findBookByIsbn(b.getIsbn());
+
+            if (optBook.isPresent()) {
+                ServiceResponse<Book> response = new ServiceResponse<>("BOOK_ALREADY_EXISTS", "{book.isbn-already-exists-error}");
+                return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(response);
+            }
+
             bookRepository.save(b);
             ServiceResponse<Book> response = new ServiceResponse<>("BOOK_CREATE_SUCCESS", "{book.create-success}", b);
             return ResponseEntity.status(HttpStatus.CREATED).body(response);
