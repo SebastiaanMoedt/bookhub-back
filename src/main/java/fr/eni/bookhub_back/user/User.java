@@ -2,10 +2,7 @@ package fr.eni.bookhub_back.user;
 
 import fr.eni.bookhub_back.loan.Loan;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.*;
 import lombok.*;
 
 import java.util.ArrayList;
@@ -25,28 +22,31 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @NotBlank
-    @Size(max = 20, message = "{user.username.size-error}")
+    @NotBlank(message = "{user.username.blank-error}")
+    @Size(min = 3, message = "{user.username.size-error}")
     @Column(name = "USERNAME", nullable = false)
     private String username;
 
+    @NotBlank(message = "{user.password.blank-error}")
+    @Size(min = 12, message = "{user.password.size-error}")
+    @Pattern(regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[^A-Za-z\\d]).+$", message = "{user.password.pattern-error}")
     @Column(name = "PASSWORD", nullable = false)
     private String password;
 
     @NotBlank(message = "{user.email.blank-error}")
-    @Size(max = 255, message = "{user.email.size-error}")
     @Email(message = "{user.email.pattern-error}")
+    @Size(max = 255)
     @Column(name = "EMAIL", length = 255, nullable = false, unique = true) // unique = true pour les clés secondaires
     private String email;
 
     @NotBlank(message = "{user.firstname.blank-error}")
-    @Size(max = 150, message = "{user.firstname.size-error}")
+    @Size(min = 3, max = 150, message = "{user.firstname.size-error}")
     @Column(name = "FIRSTNAME", length = 150, nullable = false)
 
     private String firstname;
 
     @NotBlank(message = "{user.lastname.blank-error}")
-    @Size(max = 90, message = "{user.lastname.size-error}")
+    @Size(min = 3, max = 90, message = "{user.lastname.size-error}")
     @Column(name = "LASTNAME", length = 90, nullable = false)
     private String lastname;
 
