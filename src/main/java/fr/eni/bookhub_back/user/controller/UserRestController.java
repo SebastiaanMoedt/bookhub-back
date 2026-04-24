@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 @CrossOrigin
 @RestController
-@RequestMapping("/api/auth")
+@RequestMapping("/api")
 public class UserRestController {
 
     private final UserService userService;
@@ -22,19 +22,14 @@ public class UserRestController {
         this.userService = userService;
     }
 
-    @PostMapping("/register")
+    @PostMapping("/auth/register")
     public ResponseEntity<ServiceResponse<User>> register(@Valid @RequestBody User user) {
         return this.userService.register(user);
     }
 
-    @PostMapping("/login")
+    @PostMapping("/auth/login")
     public ResponseEntity<ServiceResponse<UserNonSensibleDto>> login(@RequestBody AuthUserDto user) {
         return this.userService.login(user.getUsername(), user.getPassword());
     }
-//
-//    @GetMapping("/me")
-//    public ResponseEntity<ServiceResponse<AuthUserDto>> getProfile(@RequestBody User user) {
-//        return this.userService.login(user.getUsername(), user.getPassword());
-//    }
 
 }
