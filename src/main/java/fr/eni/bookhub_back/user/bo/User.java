@@ -53,7 +53,7 @@ public class User {
     @Enumerated(EnumType.STRING)
     @Column(name = "ROLE")
     private @Builder.Default Role role = Role.USER;
-
-    @OneToMany(mappedBy = "user")
-    private @Builder.Default List<Loan> loans = new ArrayList<>();
+//
+//    @OneToMany(mappedBy = "user")
+//    private @Builder.Default List<Loan> loans = new ArrayList<>();
 }

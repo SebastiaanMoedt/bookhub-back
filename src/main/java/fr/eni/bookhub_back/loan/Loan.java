@@ -8,6 +8,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 @Data
@@ -27,10 +28,10 @@ public class Loan {
     private BookCopy bookcopy;
 
     @Column(name = "DATE_LOANED", nullable = false)
-    private Date dateLoaned;
+    private LocalDate dateLoaned;
 
     @Column(name = "DATE_RETURNED")
-    private Date dateReturned;
+    private LocalDate dateReturned;
 
     @ManyToOne
     @JoinColumn(name = "USER_ID", referencedColumnName = "id")
