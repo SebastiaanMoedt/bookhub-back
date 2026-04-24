@@ -1,29 +1,26 @@
 package fr.eni.bookhub_back.book;
 import fr.eni.bookhub_back.common.ServiceResponse;
 
-import fr.eni.bookhub_back.common.ServiceResponse;
 import jakarta.validation.Valid;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
+import lombok.AllArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.util.ObjectUtils;
-import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-import java.util.Optional;
 
 @CrossOrigin
 @RestController
 @RequestMapping("/api/books")
+@AllArgsConstructor
 public class BookRestController {
 
-    @Autowired
     private BookService bookService;
+    private final static Logger logger = LoggerFactory.getLogger(BookRestController.class);
 
-        @GetMapping
+
+    @GetMapping
         public ResponseEntity<?> allBooks(@RequestParam(name = "page", defaultValue = "0") Integer page,
                                           @RequestParam(name = "size", defaultValue = "10") Integer size,
                                           @RequestParam(name = "sort", defaultValue = "title") String sort) {
@@ -38,6 +35,13 @@ public class BookRestController {
 
     @PostMapping("/new")
     public ResponseEntity<ServiceResponse<Book>> saveBook(@Valid @RequestBody Book book) {
-        return bookService.createBook(book);
+        try {
+            return bookService.createBook(book);
+        } catch (RuntimeException e){
+            logger.error(e.getMessage());
+            ServiceResponse<Book> response = new ServiceResponse<>("BOOK_SAVE_FAILED", "{book.save-failed-error}");
+            return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(response);
+        }
+
     }
 }
