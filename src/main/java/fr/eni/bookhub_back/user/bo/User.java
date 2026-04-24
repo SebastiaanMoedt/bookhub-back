@@ -1,4 +1,4 @@
-package fr.eni.bookhub_back.user;
+package fr.eni.bookhub_back.user.bo;
 
 import fr.eni.bookhub_back.loan.Loan;
 import jakarta.persistence.*;

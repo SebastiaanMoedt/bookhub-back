@@ -1,11 +1,12 @@
-package fr.eni.bookhub_back.user;
+package fr.eni.bookhub_back.user.controller;
 import fr.eni.bookhub_back.common.ServiceResponse;
+import fr.eni.bookhub_back.user.dto.AuthUserDto;
+import fr.eni.bookhub_back.user.bo.User;
+import fr.eni.bookhub_back.user.bll.UserService;
+import fr.eni.bookhub_back.user.dto.UserNonSensibleDto;
 import jakarta.validation.Valid;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.Optional;
 
 // POST /api/auth/register, POST /api/auth/login
 // GET /api/profile
@@ -27,8 +28,13 @@ public class UserRestController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<ServiceResponse<User>> login(@Valid @RequestBody User user) {
+    public ResponseEntity<ServiceResponse<UserNonSensibleDto>> login(@RequestBody AuthUserDto user) {
         return this.userService.login(user.getUsername(), user.getPassword());
     }
+//
+//    @GetMapping("/me")
+//    public ResponseEntity<ServiceResponse<AuthUserDto>> getProfile(@RequestBody User user) {
+//        return this.userService.login(user.getUsername(), user.getPassword());
+//    }
 
 }
