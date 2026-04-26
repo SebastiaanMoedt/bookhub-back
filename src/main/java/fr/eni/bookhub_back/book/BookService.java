@@ -56,6 +56,19 @@ public class BookService {
         }
     }
 
+    public ResponseEntity<ServiceResponse<Book>> findBookById(int id) {
+        try {
+            Book book = bookRepository.findById(id).get();
+            ServiceResponse<Book> response =
+                    new ServiceResponse<>("BOOK_FOUND", "Livre trouvé", book);
+            return ResponseEntity.ok(response);
+        } catch (RuntimeException e) {
+            ServiceResponse<Book> response =
+                    new ServiceResponse<>("BOOK_NOT_FOUND", e.getMessage());
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+        }
+    }
+
     public ResponseEntity<ServiceResponse<Book>> createBook(Book b) {
         if (b == null) {
             ServiceResponse<Book> response = new ServiceResponse<>("BOOK_NULL", localeHelper.i18n("book.null-error"));
