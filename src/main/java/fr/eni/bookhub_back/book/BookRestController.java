@@ -1,6 +1,7 @@
 package fr.eni.bookhub_back.book;
 import fr.eni.bookhub_back.common.ServiceResponse;
 
+import fr.eni.bookhub_back.locale.LocaleHelper;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
@@ -17,8 +18,9 @@ import org.springframework.web.bind.annotation.*;
 public class BookRestController {
 
     private BookService bookService;
-    private final static Logger logger = LoggerFactory.getLogger(BookRestController.class);
+    private LocaleHelper localeHelper;
 
+    private final static Logger logger = LoggerFactory.getLogger(BookRestController.class);
 
     @GetMapping
         public ResponseEntity<?> allBooks(@RequestParam(name = "page", defaultValue = "0") Integer page,
@@ -34,14 +36,24 @@ public class BookRestController {
         }
 
     @PostMapping("/new")
-    public ResponseEntity<ServiceResponse<Book>> saveBook(@Valid @RequestBody Book book) {
+    public ResponseEntity<ServiceResponse<Book>> createBook(@Valid @RequestBody Book book) {
         try {
             return bookService.createBook(book);
         } catch (RuntimeException e){
             logger.error(e.getMessage());
-            ServiceResponse<Book> response = new ServiceResponse<>("BOOK_SAVE_FAILED", "{book.save-failed-error}");
+            ServiceResponse<Book> response = new ServiceResponse<>("BOOK_CREATION_FAILED", localeHelper.i18n("book.creation-failed"));
             return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(response);
         }
+    }
 
+    @PostMapping("/{id}/update")
+    public ResponseEntity<ServiceResponse<Book>> updateBook(@Valid @PathVariable String id, @RequestBody Book book) {
+        try {
+            return bookService.updateBook(Integer.parseInt(id.trim()), book);
+        } catch (RuntimeException e){
+            logger.error(e.getMessage());
+            ServiceResponse<Book> response = new ServiceResponse<>("BOOK_UPDATE_FAILED", localeHelper.i18n("book.update-failed-error"));
+            return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(response);
+        }
     }
 }
