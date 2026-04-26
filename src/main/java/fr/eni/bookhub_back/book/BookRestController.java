@@ -53,7 +53,7 @@ public class BookRestController {
         }
     }
 
-    @PostMapping("/{id}/update")
+    @PutMapping("/{id}/update")
     public ResponseEntity<ServiceResponse<Book>> updateBook(@Valid @PathVariable String id, @RequestBody Book book) {
         try {
             return bookService.updateBook(Integer.parseInt(id.trim()), book);
