@@ -9,8 +9,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 
-@CrossOrigin
+@CrossOrigin(origins = "http://localhost:4200") // Restreindre à notre frontend
 @RestController
 @RequestMapping("/api/books")
 @AllArgsConstructor
@@ -23,8 +24,11 @@ public class BookRestController {
     @GetMapping
         public ResponseEntity<?> allBooks(@RequestParam(name = "page", defaultValue = "0") Integer page,
                                           @RequestParam(name = "size", defaultValue = "20") Integer size,
-                                          @RequestParam(name = "sort", defaultValue = "title") String sort) {
-            return bookService.findBooks(page, size, sort);
+                                          @RequestParam(name = "sort", defaultValue = "title") String sort,
+                                          @RequestParam(name = "search", defaultValue = "") String search,
+                                          @RequestParam(name = "categories", defaultValue = "ALL") List<String> categories, // defaultValue attend une string -> Spring va automatiquement convertir "ALL" en List<String> contenant ["ALL"].
+                                          @RequestParam(name = "availability", defaultValue = "ALL") String availability) {
+            return bookService.findBooks(page, size, sort, search, categories, availability);
         }
 
         @GetMapping("/{isbn}")
