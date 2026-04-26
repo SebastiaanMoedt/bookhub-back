@@ -1,12 +1,10 @@
 package fr.eni.bookhub_back.review;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import fr.eni.bookhub_back.book.Book;
 import fr.eni.bookhub_back.user.bo.User;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.Date;
 
@@ -28,7 +26,10 @@ public class Review {
     private User user;
 
     @ManyToOne
-    @JoinColumn(nullable = false)
+    @JoinColumn(name = "BOOK_ID", nullable = false, referencedColumnName = "id")
+    @ToString.Exclude        // ← évite book → copies → book → copies...
+    @EqualsAndHashCode.Exclude
+    @JsonIgnore
     private Book book;
 
     @Column(name = "SCORE")

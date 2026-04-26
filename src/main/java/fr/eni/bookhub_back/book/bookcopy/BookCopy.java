@@ -1,11 +1,9 @@
 package fr.eni.bookhub_back.book.bookcopy;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import fr.eni.bookhub_back.book.Book;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Data
 @NoArgsConstructor
@@ -22,6 +20,9 @@ public class BookCopy {
 
     @ManyToOne
     @JoinColumn(name = "BOOK_ID", referencedColumnName = "id")
+    @ToString.Exclude        // ← évite book → copies → book → copies...
+    @EqualsAndHashCode.Exclude
+    @JsonIgnore // ← évite la récursivité JSON sans casser la sérialisation de Book
     private Book book;
 
     @Column(name = "IS_AVAILABLE")

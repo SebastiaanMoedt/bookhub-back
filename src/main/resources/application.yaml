@@ -9,6 +9,7 @@ spring:
   jpa:
     show-sql: true
     hibernate.ddl-auto: update
+    open-in-view: false # pour corriger un warning au lancement de l'app
 
   spring:
     messages:

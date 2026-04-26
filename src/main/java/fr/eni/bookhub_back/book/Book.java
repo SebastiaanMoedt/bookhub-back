@@ -1,19 +1,15 @@
 package fr.eni.bookhub_back.book;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import fr.eni.bookhub_back.book.bookcopy.BookCopy;
 import fr.eni.bookhub_back.book.category.Category;
 import fr.eni.bookhub_back.review.Review;
-import fr.eni.bookhub_back.waitinglist.WaitingList;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Max;
-import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Size;
 import lombok.*;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 @Data
 @NoArgsConstructor
@@ -22,6 +18,7 @@ import java.util.List;
 
 @Entity
 @Table(name = "BOOK")
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"}) // ← dit à Jackson d'ignorer les propriétés internes du proxy Hibernate
 public class Book {
 
     @Id
@@ -55,5 +52,19 @@ public class Book {
 
     @Column(name = "DESCRIPTION", columnDefinition = "VARCHAR(MAX)")
     private String description;
+
+    // LAZY = on ne récupère que la promotion
+    // @Builder.Default = pour indiquer au builder d'instancier cette liste à vide et non à null
+
+    // @TODO pour info... obligé de faire le lien pour que l'ORM gère le join de Book et Copie...
+    @OneToMany(mappedBy = "book", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
+    private @Builder.Default Set<BookCopy> copies = new HashSet<>();
+
+    @OneToMany(mappedBy = "book", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
+    private @Builder.Default Set<Review> reviews = new HashSet<>(); // ← nécessaire pour le join
 
 }
