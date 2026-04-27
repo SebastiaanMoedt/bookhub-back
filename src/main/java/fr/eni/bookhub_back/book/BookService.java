@@ -22,6 +22,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
 import java.util.Scanner;
+import java.util.Set;
 
 @AllArgsConstructor
 @Service
@@ -264,10 +265,13 @@ public class BookService {
         // Vérifier s'il y a des copies en location
             // Si oui, ne pas permettre la suppression
             // Sinon, OK
-        List<BookCopy> copies = bookInDB.get().getCopies().stream().toList();
-        System.out.println(copies);
+        Set<BookCopy> copies = bookInDB.get().getCopies();
+        Optional<BookCopy> copyCurrentlyInLoan = copies.stream().filter(c -> !c.isAvailable()).findFirst();
 
-
+        if(copyCurrentlyInLoan.isPresent()) {
+            ServiceResponse<Book> response = new ServiceResponse<>("BOOK_CANNOT_DELETE_COPY_IN_LOAN", localeHelper.i18n("book.cant-delete-copy-in-loan-error"));
+            return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(response);
+        }
 
         try {
             //bookRepository.deleteById(id);

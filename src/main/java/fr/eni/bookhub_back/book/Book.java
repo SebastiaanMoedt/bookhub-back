@@ -57,12 +57,12 @@ public class Book {
     // @Builder.Default = pour indiquer au builder d'instancier cette liste à vide et non à null
 
     // @TODO pour info... obligé de faire le lien pour que l'ORM gère le join de Book et Copie...
-    @OneToMany(mappedBy = "book", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "book", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
     private @Builder.Default Set<BookCopy> copies = new HashSet<>();
 
-    @OneToMany(mappedBy = "book", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "book", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
     private @Builder.Default Set<Review> reviews = new HashSet<>(); // ← nécessaire pour le join
