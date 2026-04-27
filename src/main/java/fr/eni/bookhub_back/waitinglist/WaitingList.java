@@ -5,6 +5,7 @@ import fr.eni.bookhub_back.user.bo.User;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
 @Data
@@ -24,7 +25,7 @@ public class WaitingList {
     private User user;
 
     @Column(name = "DATE_ADDED")
-    private Date dateAdded;
+    private LocalDateTime dateAdded;
 
     @ManyToOne
     @JoinColumn(name = "BOOK_ID", referencedColumnName = "id")

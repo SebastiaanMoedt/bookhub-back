@@ -79,5 +79,8 @@ public class BookRestController {
         }
     }
 
-
+//    @GetMapping("/api/books/loaned")
+//    public ResponseEntity<List<Book>> getAllLoanedBooksByUsername(String username){
+//        return bookService.findLoanedBooksByUsername(username);
+//    }
 }

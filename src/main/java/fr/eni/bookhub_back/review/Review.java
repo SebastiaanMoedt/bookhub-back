@@ -6,6 +6,7 @@ import fr.eni.bookhub_back.user.bo.User;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 @Data
@@ -39,5 +40,5 @@ public class Review {
     private String comment;
 
     @Column(name = "DATE_PUBLISHED")
-    private Date datePublished;
+    private LocalDate datePublished;
 }
