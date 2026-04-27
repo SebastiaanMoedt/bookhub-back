@@ -1,5 +1,6 @@
 package fr.eni.bookhub_back.book;
 
+import fr.eni.bookhub_back.book.bookcopy.BookCopy;
 import fr.eni.bookhub_back.common.ServiceResponse;
 import fr.eni.bookhub_back.review.Review;
 import jakarta.persistence.criteria.JoinType;
@@ -166,7 +167,7 @@ public class BookService {
 
         try {
             bookRepository.save(b);
-            ServiceResponse<Book> response = new ServiceResponse<>("BOOK_CREATE_SUCCESS", localeHelper.i18n("book.create-success"));
+            ServiceResponse<Book> response = new ServiceResponse<>("BOOK_CREATE_SUCCESS", localeHelper.i18n("book.create-success"), b);
             return ResponseEntity.status(HttpStatus.CREATED).body(response);
         } catch (RuntimeException e) {
             logger.error(e.getMessage());
@@ -237,6 +238,7 @@ public class BookService {
             bookInDB.get().setCoverUrl(b.getCoverUrl().trim());
         }
 
+        // TODO: déplacer dans updateBookCopy
         // Modifier l'état ?
         // Modifier la disponibilité ?
 
@@ -246,8 +248,36 @@ public class BookService {
             return ResponseEntity.status(HttpStatus.OK).body(response);
         } catch (RuntimeException e) {
             logger.error("BookService updateBook() error : {}", e.getMessage());
-            ServiceResponse<Book> response = new ServiceResponse<>("BOOK_UPDATE_FAILED", localeHelper.i18n("book.update-failed"));
+            ServiceResponse<Book> response = new ServiceResponse<>("BOOK_UPDATE_FAILED", localeHelper.i18n("book.update-failed-error"));
             return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(response);
         }
+    }
+
+    public ResponseEntity<ServiceResponse<Book>> deleteBook(int id) {
+        Optional<Book> bookInDB = bookRepository.findById(id);
+        if (bookInDB.isEmpty()) {
+            ServiceResponse<Book> response = new ServiceResponse<>("BOOK_ID_DOESNT_EXIST", localeHelper.i18n("book.id-doesnt-exist-error"));
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+        }
+
+        // Boucler sur les copies
+        // Vérifier s'il y a des copies en location
+            // Si oui, ne pas permettre la suppression
+            // Sinon, OK
+        List<BookCopy> copies = bookInDB.get().getCopies().stream().toList();
+        System.out.println(copies);
+
+
+
+        try {
+            //bookRepository.deleteById(id);
+            ServiceResponse<Book> response = new ServiceResponse<>("BOOK_DELETE_SUCCESS", localeHelper.i18n("book.delete-success"));
+            return ResponseEntity.status(HttpStatus.OK).body(response);
+        } catch (RuntimeException e) {
+            logger.error("BookService deleteBook() error : {}", e.getMessage());
+            ServiceResponse<Book> response = new ServiceResponse<>("BOOK_DELETE_FAILED", localeHelper.i18n("book.delete-failed-error"));
+            return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(response);
+        }
+
     }
 }
