@@ -24,7 +24,6 @@ public class BookRestController {
 
     private final static Logger logger = LoggerFactory.getLogger(BookRestController.class);
 
-
     @GetMapping
         public ResponseEntity<?> allBooks(@RequestParam(name = "page", defaultValue = "0") Integer page,
                                           @RequestParam(name = "size", defaultValue = "20") Integer size,
@@ -79,4 +78,6 @@ public class BookRestController {
             return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(response);
         }
     }
+
+
 }

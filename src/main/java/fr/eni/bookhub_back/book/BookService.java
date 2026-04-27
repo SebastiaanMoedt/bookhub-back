@@ -101,7 +101,7 @@ public class BookService {
             Pageable pageable = PageRequest.of(page, size, sort);    // permet de dire comment découper et trier les résultats de recherche
             Page<Book> pageBook = bookRepository.findAll(spec, pageable);       // spec = obj qui décrit les filtres de ma req -> construit dynamiquement !
             ServiceResponse<?> response =
-                    new ServiceResponse<>("BOOKS_FOUND", "{book.found}", pageBook);
+                    new ServiceResponse<>("BOOKS_FOUND", localeHelper.i18n("books.found"), pageBook);
             return ResponseEntity.ok(response);
         } catch (RuntimeException e) {
             ServiceResponse<Page<Book>> response =
@@ -118,7 +118,7 @@ public class BookService {
         try {
             Book book = bookRepository.findBookByIsbn(isbn).get();
             ServiceResponse<Book> response =
-                    new ServiceResponse<>("BOOK_FOUND", "Livre trouvé", book);
+                    new ServiceResponse<>("BOOK_FOUND", localeHelper.i18n("book.found"), book);
             return ResponseEntity.ok(response);
         } catch (RuntimeException e) {
             ServiceResponse<Book> response =
@@ -131,7 +131,7 @@ public class BookService {
         try {
             Book book = bookRepository.findById(id).get();
             ServiceResponse<Book> response =
-                    new ServiceResponse<>("BOOK_FOUND", "Livre trouvé", book);
+                    new ServiceResponse<>("BOOK_FOUND", localeHelper.i18n("book.found"), book);
             return ResponseEntity.ok(response);
         } catch (RuntimeException e) {
             ServiceResponse<Book> response =
