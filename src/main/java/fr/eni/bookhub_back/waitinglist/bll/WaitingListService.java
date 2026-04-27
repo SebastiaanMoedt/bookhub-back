@@ -35,18 +35,18 @@ public class WaitingListService {
         return null ;
     }
 
-    public ResponseEntity<ServiceResponse<WaitingList>> addToWishlist(ReservationDto wishDto){
-        // conversion dto to BO
-        WaitingList wishToAdd = new WaitingList();
-        Book book = bookService.findBookById(wishDto.getBookId()).getBody().data;
-        User user = userService.findById(wishDto.getUserId());
-        LocalDateTime date = wishDto.getDateResa() ;
-        wishToAdd.setBook(book);
-        wishToAdd.setUser(user);
-        wishToAdd.setDateAdded(date);
-        // save
-        WaitingList wishDBB = waitingListDao.save(wishToAdd) ;
-        ServiceResponse<WaitingList> response = new ServiceResponse<>("RESA_SAVED", lH.i18n("resa.saved-success"), wishDBB);
-        return ResponseEntity.status(HttpStatus.CREATED).body(response);
-    }
+//    public ResponseEntity<ServiceResponse<WaitingList>> addToWishlist(ReservationDto wishDto){
+//        // conversion dto to BO
+//        WaitingList wishToAdd = new WaitingList();
+//        Book book = bookService.findBookById(wishDto.getBookId()).getBody().data;
+//        User user = userService.findById(wishDto.getUserId());
+//        LocalDateTime date = wishDto.getDateResa() ;
+//        wishToAdd.setBook(book);
+//        wishToAdd.setUser(user);
+//        wishToAdd.setDateAdded(date);
+//        // save
+//        WaitingList wishDBB = waitingListDao.save(wishToAdd) ;
+//        ServiceResponse<WaitingList> response = new ServiceResponse<>("RESA_SAVED", lH.i18n("resa.saved-success"), wishDBB);
+//        return ResponseEntity.status(HttpStatus.CREATED).body(response);
+//    }
 }
