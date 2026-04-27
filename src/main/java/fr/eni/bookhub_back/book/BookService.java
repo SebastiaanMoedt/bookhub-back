@@ -20,13 +20,15 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Scanner;
 
 @AllArgsConstructor
 @Service
 public class BookService {
 
     private LocaleHelper localeHelper;
-    private final BookRepository bookRepository; // pas besoin de l'injecter par constructeur, Lombock s'en occupe
+
+    private BookRepository bookRepository;
 
     private final static Logger logger = LoggerFactory.getLogger(BookService.class);
 
