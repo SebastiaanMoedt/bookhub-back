@@ -250,4 +250,17 @@ public class BookService {
             return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(response);
         }
     }
+
+
+    List<Book> findLoanedBooksByUsername(String username){
+        try {
+
+            ServiceResponse<Book> response = new ServiceResponse<>("BOOK_UPDATE_SUCCESS", localeHelper.i18n("book.update-success"), b);
+            return ResponseEntity.status(HttpStatus.OK).body(response);
+        } catch (RuntimeException e) {
+            logger.error("BookService updateBook() error : {}", e.getMessage());
+            ServiceResponse<Book> response = new ServiceResponse<>("BOOK_UPDATE_FAILED", localeHelper.i18n("book.update-failed"));
+            return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(response);
+        }
+    }
 }
