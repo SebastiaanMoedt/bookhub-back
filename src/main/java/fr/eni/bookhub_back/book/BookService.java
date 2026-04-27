@@ -25,7 +25,6 @@ import java.util.Optional;
 @Service
 public class BookService {
 
-    private BookRepository bookRepository;
     private LocaleHelper localeHelper;
     private final BookRepository bookRepository; // pas besoin de l'injecter par constructeur, Lombock s'en occupe
 
@@ -67,7 +66,7 @@ public class BookService {
                 query.distinct(true);
                 return cb.equal(
                         root.join("copies", JoinType.LEFT).get("isAvailable"),
-                        availability.equals("NOW") ? true : false);
+                        availability.equals("NOW"));
             });
         }
 
@@ -107,7 +106,6 @@ public class BookService {
 
     public Optional<Book> findBookObjectByISBN(String isbn) {
         return bookRepository.findBookByIsbn(isbn);
-
     }
 
     public ResponseEntity<ServiceResponse<Book>> findBookByISBN(String isbn) {
