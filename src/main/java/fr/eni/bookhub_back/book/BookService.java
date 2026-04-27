@@ -1,6 +1,8 @@
 package fr.eni.bookhub_back.book;
 
 import fr.eni.bookhub_back.book.bookcopy.BookCopy;
+import fr.eni.bookhub_back.book.bookcopy.BookCopyRepository;
+import fr.eni.bookhub_back.book.bookcopy.BookState;
 import fr.eni.bookhub_back.common.ServiceResponse;
 import fr.eni.bookhub_back.review.Review;
 import jakarta.persistence.criteria.JoinType;
@@ -29,8 +31,8 @@ import java.util.Set;
 public class BookService {
 
     private LocaleHelper localeHelper;
-
     private BookRepository bookRepository;
+    private BookCopyRepository bookCopyRepository;
 
     private final static Logger logger = LoggerFactory.getLogger(BookService.class);
 
@@ -167,7 +169,20 @@ public class BookService {
         }
 
         try {
+            // Save new book in base
             bookRepository.save(b);
+
+            // Instanciate new book copy
+            BookCopy newBookCopy = new BookCopy();
+
+            // Set values for the new book copy
+            newBookCopy.setBook(b);
+            newBookCopy.setAvailable(true);
+            newBookCopy.setState(BookState.NEW);
+
+            // Save new book copy in base
+            bookCopyRepository.save(newBookCopy);
+
             ServiceResponse<Book> response = new ServiceResponse<>("BOOK_CREATE_SUCCESS", localeHelper.i18n("book.create-success"), b);
             return ResponseEntity.status(HttpStatus.CREATED).body(response);
         } catch (RuntimeException e) {
@@ -274,7 +289,7 @@ public class BookService {
         }
 
         try {
-            //bookRepository.deleteById(id);
+            bookRepository.deleteById(id);
             ServiceResponse<Book> response = new ServiceResponse<>("BOOK_DELETE_SUCCESS", localeHelper.i18n("book.delete-success"));
             return ResponseEntity.status(HttpStatus.OK).body(response);
         } catch (RuntimeException e) {
