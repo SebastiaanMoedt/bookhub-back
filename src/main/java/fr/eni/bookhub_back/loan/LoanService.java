@@ -2,7 +2,6 @@ package fr.eni.bookhub_back.loan;
 
 import fr.eni.bookhub_back.book.Book;
 import fr.eni.bookhub_back.book.BookRepository;
-import fr.eni.bookhub_back.book.BookService;
 import fr.eni.bookhub_back.book.bookcopy.BookCopy;
 import fr.eni.bookhub_back.book.bookcopy.BookCopyRepository;
 import fr.eni.bookhub_back.common.ServiceResponse;
@@ -39,7 +38,6 @@ public class LoanService {
 
     @Autowired
     private LocaleHelper localeHelper;
-
 
     ResponseEntity<ServiceResponse<Loan>> reserverLivre(LoanDTO loanDTO){
 

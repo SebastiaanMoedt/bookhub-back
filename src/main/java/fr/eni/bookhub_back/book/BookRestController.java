@@ -68,4 +68,9 @@ public class BookRestController {
             return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(response);
         }
     }
+
+    @GetMapping("/api/books/loaned")
+    public ResponseEntity<List<Book>> getAllLoanedBooksByUsername(String username){
+        return bookService.findLoanedBooksByUsername(username);
+    }
 }
