@@ -1,6 +1,5 @@
 package fr.eni.bookhub_back.waitinglist;
 import fr.eni.bookhub_back.common.ServiceResponse;
-import fr.eni.bookhub_back.loan.Loan;
 import fr.eni.bookhub_back.waitinglist.bll.WaitingListService;
 import fr.eni.bookhub_back.waitinglist.dto.ReservationDto;
 import fr.eni.bookhub_back.waitinglist.dto.ReservationRequestDto;
@@ -21,12 +20,7 @@ public class WaitingListRestController {
         this.waitingListService = waitingListService;
     }
 
-//    @GetMapping("/reservations/my")
-//    public ResponseEntity<ServiceResponse<List<WaitingList>>> getWishListOfCurrentUser(@Valid @RequestBody int userId) {
-//        return waitingListService.getWishListOfCurrentUser(userId);
-//    }
-
-    @GetMapping("api/dashboard/dashboardUserWaitingListPending")
+    @GetMapping("/dashboard/dashboardUserWaitingListPending")
     public ResponseEntity<ServiceResponse<List<WaitingList>>> dashboardUserLoanRetards(@RequestParam Integer userId){
         try {
             return waitingListService.dashboardUserWaitingListPending(userId);
