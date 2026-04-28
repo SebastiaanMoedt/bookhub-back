@@ -47,7 +47,7 @@ AS
 SELECT COUNT(*) AS nbBook
 FROM book AS b
          LEFT JOIN book_copy as c ON b.id=c.book_id
-WHERE NOT(state = 'RETIRED');
+WHERE NOT(state = 'RETIRED' OR state = 'MISSING');
 
 /* --- Top 10 Livres les + empruntés */
 GO
