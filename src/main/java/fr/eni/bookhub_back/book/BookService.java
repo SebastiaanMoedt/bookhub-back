@@ -41,18 +41,6 @@ public class BookService {
 
     private final static Logger logger = LoggerFactory.getLogger(BookService.class);
 
-    ResponseEntity<ServiceResponse<List<Book>>> dashboardUserBookReadByUser(Integer userId){
-        try {
-            List<Book> books = bookRepository.dashboardUserBookReadByUser(userId);
-            ServiceResponse<List<Book>> response = new ServiceResponse<>("LOAD_BOOK_SUCCESS", localeHelper.i18n("book.load-success"), books);
-            return ResponseEntity.status(HttpStatus.OK).body(response);
-        } catch (RuntimeException e) {
-            logger.error(e.getMessage());
-            ServiceResponse<List<Book>> response = new ServiceResponse<>("LOAD_BOOK_FAIL", localeHelper.i18n("book.load-failed-error"));
-            return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(response);
-        }
-    }
-
     ResponseEntity<ServiceResponse<List<Book>>> dashboardMostReadBooks(){
         try {
             List<Book> books = bookRepository.dashboardMostReadBooks();

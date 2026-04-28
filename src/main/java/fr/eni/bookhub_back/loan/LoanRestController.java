@@ -26,42 +26,12 @@ public class LoanRestController {
         }
     }
 
-    @GetMapping("api/dashboard/dashboardUserLoanOngoing")
-    public ResponseEntity<ServiceResponse<List<Loan>>> dashboardUserLoanOngoing(@RequestParam Integer userId){
+    @GetMapping("/dashboard/dashboardUserBookReadByUser")
+    public ResponseEntity<ServiceResponse<List<Loan>>> dashboardUserBookReadByUser(@RequestParam Integer userId){
         try {
-            return loanService.dashboardUserLoanOngoing(userId);
+            return loanService.dashboardUserBookLoanReadByUser(userId);
         } catch (RuntimeException e){
-            ServiceResponse<List<Loan>> response = new ServiceResponse<>("LOAD_LOAN_FAILED", "{loan.load-fail}");
-            return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(response);
-        }
-    }
-
-    @GetMapping("api/dashboard/dashboardBiblioLoanOngoing")
-    public ResponseEntity<ServiceResponse<List<Loan>>> dashboardBiblioLoanOngoing(){
-        try {
-            return loanService.dashboardBiblioLoanOngoing();
-        } catch (RuntimeException e){
-            ServiceResponse<List<Loan>> response = new ServiceResponse<>("LOAD_LOAN_FAILED", "{loan.load-fail}");
-            return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(response);
-        }
-    }
-
-    @GetMapping("api/dashboard/dashboardUserLoanRetards")
-    public ResponseEntity<ServiceResponse<List<Loan>>> dashboardUserLoanRetards(@RequestParam Integer userId){
-        try {
-            return loanService.dashboardUserLoanRetards(userId);
-        } catch (RuntimeException e){
-            ServiceResponse<List<Loan>> response = new ServiceResponse<>("LOAD_LOAN_FAILED", "{loan.load-fail}");
-            return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(response);
-        }
-    }
-
-    @GetMapping("api/dashboard/dashboardBiblioLoanRetards")
-    public ResponseEntity<ServiceResponse<List<Loan>>> dashboardBiblioLoanRetards(){
-        try {
-            return loanService.dashboardBiblioLoanRetards();
-        } catch (RuntimeException e){
-            ServiceResponse<List<Loan>> response = new ServiceResponse<>("LOAD_LOAN_FAILED", "{loan.load-fail}");
+            ServiceResponse<List<Loan>> response = new ServiceResponse<>("LOAD_BOOK_FAILED", "{book.load-fail}");
             return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(response);
         }
     }
