@@ -4,7 +4,10 @@ import fr.eni.bookhub_back.book.bookcopy.BookCopy;
 import fr.eni.bookhub_back.book.bookcopy.BookCopyRepository;
 import fr.eni.bookhub_back.book.bookcopy.BookState;
 import fr.eni.bookhub_back.common.ServiceResponse;
+import fr.eni.bookhub_back.loan.Loan;
+import fr.eni.bookhub_back.loan.LoanRepository;
 import fr.eni.bookhub_back.review.Review;
+import fr.eni.bookhub_back.user.bo.User;
 import fr.eni.bookhub_back.user.dao.jpa.UserJpaRepository;
 import jakarta.persistence.criteria.JoinType;
 import jakarta.persistence.criteria.Root;
@@ -24,7 +27,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.Scanner;
 import java.util.Set;
 
 @AllArgsConstructor
@@ -32,11 +34,48 @@ import java.util.Set;
 public class BookService {
 
     private final UserJpaRepository userJpaRepository;
+    private final LoanRepository loanRepository;
     private LocaleHelper localeHelper;
     private BookRepository bookRepository;
     private BookCopyRepository bookCopyRepository;
 
     private final static Logger logger = LoggerFactory.getLogger(BookService.class);
+
+    ResponseEntity<ServiceResponse<List<Book>>> dashboardUserBookReadByUser(Integer userId){
+        try {
+            List<Book> books = bookRepository.dashboardUserBookReadByUser(userId);
+            ServiceResponse<List<Book>> response = new ServiceResponse<>("LOAD_BOOK_SUCCESS", localeHelper.i18n("book.load-success"), books);
+            return ResponseEntity.status(HttpStatus.OK).body(response);
+        } catch (RuntimeException e) {
+            logger.error(e.getMessage());
+            ServiceResponse<List<Book>> response = new ServiceResponse<>("LOAD_BOOK_FAIL", localeHelper.i18n("book.load-failed-error"));
+            return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(response);
+        }
+    }
+
+    ResponseEntity<ServiceResponse<List<Book>>> dashboardMostReadBooks(){
+        try {
+            List<Book> books = bookRepository.dashboardMostReadBooks();
+            ServiceResponse<List<Book>> response = new ServiceResponse<>("LOAD_BOOK_SUCCESS", localeHelper.i18n("book.load-success"), books);
+            return ResponseEntity.status(HttpStatus.OK).body(response);
+        } catch (RuntimeException e) {
+            logger.error(e.getMessage());
+            ServiceResponse<List<Book>> response = new ServiceResponse<>("LOAD_BOOK_FAIL", localeHelper.i18n("book.load-failed-error"));
+            return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(response);
+        }
+    }
+
+    ResponseEntity<ServiceResponse<Integer>> dashboardNbTotalBook(){
+        try {
+            Integer nbBooks = bookRepository.dashboardNbTotalBook();
+            ServiceResponse<Integer> response = new ServiceResponse<>("LOAD_BOOK_SUCCESS", localeHelper.i18n("book.load-success"), nbBooks);
+            return ResponseEntity.status(HttpStatus.OK).body(response);
+        } catch (RuntimeException e) {
+            logger.error(e.getMessage());
+            ServiceResponse<Integer> response = new ServiceResponse<>("LOAD_BOOK_FAIL", localeHelper.i18n("book.load-failed-error"));
+            return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(response);
+        }
+    }
 
     public ResponseEntity<?> findBooks(int page, int size, String sortBy, String search, List<String> categories, String availability) {
 
@@ -297,7 +336,14 @@ public class BookService {
         }
     }
 
-    //    List<Book> findLoanedBooksByUsername(String username){
+//        ResponseEntity<ServiceResponse<List<Book>>> findLoanedBooksByUsername(String username){
+//            Optional<User> optUser = userJpaRepository.findByUsername(username);
+//            if(optUser.isEmpty()){
+//                ServiceResponse<List<Book>> response = new ServiceResponse<>("USER_NOT_FOUND", localeHelper.i18n("user.not-found"));
+//                return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(response);
+//            }
+//            List<Loan> loans = loanRepository.getLoansByUser(optUser.get());
+//
 //        try {
 //            ServiceResponse<List<Book>> response = new ServiceResponse<>("BOOK_UPDATE_SUCCESS", localeHelper.i18n("book.update-success"), b);
 //            return ResponseEntity.status(HttpStatus.OK).body(response);

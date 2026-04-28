@@ -4,6 +4,8 @@ import fr.eni.bookhub_back.waitinglist.WaitingList;
 import fr.eni.bookhub_back.waitinglist.dao.IWaitingListDao;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
 public class WaitingListJpaDao implements IWaitingListDao {
 
@@ -16,5 +18,10 @@ public class WaitingListJpaDao implements IWaitingListDao {
     @Override
     public WaitingList save(WaitingList waitingList) {
         return waitingListRepository.save(waitingList);
+    }
+
+    @Override
+    public List<WaitingList> dashboardUserWaitingListPending(int userId) {
+        return waitingListRepository.dashboardUserWaitingListPending(userId);
     }
 }
