@@ -37,7 +37,7 @@ public class WaitingListRestController {
     }
 
     @PostMapping("/reservations")
-    public ResponseEntity<ServiceResponse<ReservationDto>> addReservation(@RequestParam ReservationRequestDto request) {
+    public ResponseEntity<ServiceResponse<ReservationDto>> addReservation(@RequestBody ReservationRequestDto request) {
         try {
             Integer idBookToResa = request.getBookId();
             Integer idUser = request.getUserId();
