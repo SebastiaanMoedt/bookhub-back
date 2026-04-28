@@ -80,16 +80,6 @@ public class BookRestController {
 //        }
 //    }
 
-    @GetMapping("/dashboard/dashboardUserBookReadByUser")
-    public ResponseEntity<ServiceResponse<List<Book>>> dashboardUserBookReadByUser(@RequestParam Integer userId){
-        try {
-            return bookService.dashboardUserBookReadByUser(userId);
-        } catch (RuntimeException e){
-            ServiceResponse<List<Book>> response = new ServiceResponse<>("LOAD_BOOK_FAILED", "{book.load-fail}");
-            return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(response);
-        }
-    }
-
     @GetMapping("/dashboard/dashboardMostReadBooks")
     public ResponseEntity<ServiceResponse<List<Book>>> dashboardMostReadBooks(){
         try {

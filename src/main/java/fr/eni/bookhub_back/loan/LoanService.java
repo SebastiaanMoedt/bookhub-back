@@ -39,6 +39,19 @@ public class LoanService {
     @Autowired
     private LocaleHelper localeHelper;
 
+
+    public ResponseEntity<ServiceResponse<List<Loan>>> dashboardUserBookLoanReadByUser(Integer userId) {
+        try {
+            List<Loan> loans = loanRepository.dashboardUserBookLoanReadByUser(userId);
+            ServiceResponse<List<Loan>> response = new ServiceResponse<>("LOAD_LOAN_SUCCESS", localeHelper.i18n("loan.load-success"), loans);
+            return ResponseEntity.status(HttpStatus.OK).body(response);
+        } catch (RuntimeException e) {
+            logger.error(e.getMessage());
+            ServiceResponse<List<Loan>> response = new ServiceResponse<>("LOAD_LOAN_FAIL", localeHelper.i18n("loan.load-failed-error"));
+            return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(response);
+        }
+    }
+
     ResponseEntity<ServiceResponse<List<Loan>>> dashboardUserLoanOngoing(Integer userId){
         try {
             List<Loan> loans = loanRepository.dashboardUserLoanOngoing(userId);
