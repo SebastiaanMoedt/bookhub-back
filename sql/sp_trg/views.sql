@@ -10,7 +10,7 @@ AS SELECT *
 FROM loan
 WHERE date_returned IS NULL ;
 
-/* --- Emprunts actifs --- */
+/* --- Retards --- */
 GO
 CREATE OR ALTER VIEW Dashboard_User_Emprunts_Retards
 AS SELECT *
@@ -18,7 +18,7 @@ FROM loan
 WHERE DATEADD(DAY, 14, date_loaned) < GETDATE()
         AND date_returned IS NULL; ;
 
-/* --- Retards --- */
+/* --- Réservations --- */
 GO
 CREATE OR ALTER VIEW Dashboard_User_WaitingList_Pending
 AS SELECT * FROM waiting_list WHERE status_reservation='PENDING';

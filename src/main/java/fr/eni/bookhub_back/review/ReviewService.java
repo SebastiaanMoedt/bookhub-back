@@ -20,11 +20,13 @@ import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.CrossOrigin;
 
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
+@CrossOrigin
 @Service
 public class ReviewService {
     @Autowired
