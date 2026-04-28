@@ -47,9 +47,16 @@ public class WaitingListService {
         }
     }
 
-    public ResponseEntity<ServiceResponse<ReservationDto>> addReservation(Integer bookToResa, Integer userId){
+    public ResponseEntity<ServiceResponse<ReservationDto>> addReservation(Integer idBookToResa, Integer userId){
         try {
-            Book book = bookService.findBookById(bookToResa).getBody().data;
+            // nb de réservations déjà faites par l'utilisateur
+            int nbResaEnCours = waitingListDao.nbResaEnCoursByUser(userId);
+            if (nbResaEnCours >= 5){
+                logger.error("DEJA 5 RESA EN COURS");
+                ServiceResponse<ReservationDto> response = new ServiceResponse<>("RESA_MAX", lH.i18n("resa.max-failed-error"));
+                return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(response);
+            }
+            Book book = bookService.findBookById(idBookToResa).getBody().data;
             User user = userService.findById(userId);
             LocalDateTime dateResa = LocalDateTime.now();
             WaitingList resa = WaitingList.builder()
