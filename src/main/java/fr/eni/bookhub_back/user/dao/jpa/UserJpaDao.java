@@ -21,6 +21,11 @@ public class UserJpaDao implements IUserDao {
     }
 
     @Override
+    public Optional<User> findById(Integer userId) {
+        return userRepository.findById(userId);
+    }
+
+    @Override
     public User save(User user) {
         return userRepository.save(user);
     }

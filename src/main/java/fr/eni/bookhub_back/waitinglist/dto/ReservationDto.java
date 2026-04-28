@@ -10,11 +10,11 @@ import java.time.LocalDateTime;
 @Builder
 @EqualsAndHashCode(of = {"id"})
 public class ReservationDto {
-    private int id ;
-    private int userId ;
-    private int bookId ;
-    private String bookTitle ;
+    private Integer id ;
+    private Integer userId ;
+    private Integer bookId ;
+    private String title;
     private LocalDateTime dateResa ;
-    private int rank ; // rang dans la liste d'attente
+    private Integer rank ; // rang dans la liste d'attente
     private StatusReservation status ;
 }

@@ -8,10 +8,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@EqualsAndHashCode(of = {"userId", "bookId"})
 public class ReservationListDto {
-    private int userId ;
-    private int bookId ;
     private List<ReservationDto> reservations;
     private int nbResa;
 }

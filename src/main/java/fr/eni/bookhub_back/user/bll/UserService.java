@@ -25,12 +25,18 @@ public class UserService {
 
     private UserNonSensibleDto getLimitedUserData(User user) {
         UserNonSensibleDto dto = new UserNonSensibleDto();
+        dto.setId(user.getId());
         dto.setUsername(user.getUsername());
         dto.setEmail(user.getEmail());
         dto.setFirstname(user.getFirstname());
         dto.setLastname(user.getLastname());
         dto.setRole(user.getRole());
         return dto;
+    }
+
+    public User findById(Integer userId) {
+        Optional<User> user = userDao.findById(userId);
+        return user.orElse(null);
     }
 
     public ResponseEntity<ServiceResponse<UserNonSensibleDto>> login(String username, String password) {

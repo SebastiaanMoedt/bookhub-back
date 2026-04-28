@@ -1,14 +1,11 @@
 package fr.eni.bookhub_back.waitinglist;
 import fr.eni.bookhub_back.common.ServiceResponse;
-import fr.eni.bookhub_back.loan.Loan;
 import fr.eni.bookhub_back.waitinglist.bll.WaitingListService;
 import fr.eni.bookhub_back.waitinglist.dto.ReservationDto;
-import jakarta.validation.Valid;
+import fr.eni.bookhub_back.waitinglist.dto.ReservationRequestDto;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @CrossOrigin
 @RestController
@@ -27,11 +24,13 @@ public class WaitingListRestController {
 //    }
 
     @PostMapping("/reservations")
-    public ResponseEntity<ServiceResponse<WaitingList>> addToWishlist(@Valid @RequestBody ReservationDto wishDto) {
+    public ResponseEntity<ServiceResponse<ReservationDto>> addReservation(@RequestBody ReservationRequestDto request) {
         try {
-            return waitingListService.addToWishlist(wishDto);
+            Integer idBookToResa = request.getBookId();
+            Integer idUser = request.getUserId();
+            return waitingListService.addReservation(idBookToResa, idUser);
         } catch (RuntimeException e){
-            ServiceResponse<WaitingList> response = new ServiceResponse<>("RESA_SAVE_FAILED", "{resa.save-failed-error}");
+            ServiceResponse<ReservationDto> response = new ServiceResponse<>("RESA_SAVE_FAILED", "{resa.save-failed-error}");
             return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(response);
         }
     }

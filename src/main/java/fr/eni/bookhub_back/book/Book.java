@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import fr.eni.bookhub_back.book.bookcopy.BookCopy;
 import fr.eni.bookhub_back.book.category.Category;
 import fr.eni.bookhub_back.review.Review;
+import fr.eni.bookhub_back.waitinglist.WaitingList;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import lombok.*;
@@ -66,5 +67,10 @@ public class Book {
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
     private @Builder.Default Set<Review> reviews = new HashSet<>(); // ← nécessaire pour le join
+
+    @OneToMany(mappedBy = "book", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
+    private @Builder.Default Set<WaitingList> reservations = new HashSet<>(); // ← nécessaire pour le join
 
 }

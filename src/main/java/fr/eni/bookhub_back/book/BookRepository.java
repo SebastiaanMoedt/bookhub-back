@@ -11,7 +11,7 @@ import java.util.Optional;
 
 public interface BookRepository extends JpaRepository<Book, Integer>, JpaSpecificationExecutor<Book> {
     // Avec @EntityGraph, Hibernate charge tout en une seule requête :
-    @EntityGraph(attributePaths = {"copies", "reviews", "category"})
+    @EntityGraph(attributePaths = {"copies", "reviews", "category", "reservations"})
     Page<Book> findAll(Specification<Book> spec, Pageable pageable); // ← Specification vient de JpaSpecificationExecutor
 
     Optional<Book> findBookByIsbn(String isbn);

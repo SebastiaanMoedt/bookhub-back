@@ -6,5 +6,6 @@ import java.util.Optional;
 
 public interface IUserDao {
     Optional<User> findByUsername(String username);
+    Optional<User> findById(Integer userId);
     User save(User user);
 }

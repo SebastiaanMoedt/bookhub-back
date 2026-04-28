@@ -9,6 +9,7 @@ import lombok.*;
 @Builder
 @EqualsAndHashCode(of = {"username"})
 public class UserNonSensibleDto {
+    private Integer id;
     private String username;
     private String email;
     private String firstname;
