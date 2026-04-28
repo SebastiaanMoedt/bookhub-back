@@ -1,8 +1,12 @@
 package fr.eni.bookhub_back.dashboard;
 
+import fr.eni.bookhub_back.book.BookRepository;
+import fr.eni.bookhub_back.book.BookRestController;
 import fr.eni.bookhub_back.book.BookService;
 import fr.eni.bookhub_back.common.ServiceResponse;
 import fr.eni.bookhub_back.loan.Loan;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -12,23 +16,17 @@ import java.util.List;
 @Service
 public class DashboardService {
 
+    private final static Logger logger = LoggerFactory.getLogger(BookRestController.class);
 
-    private final BookService bookService;
+    private final BookRepository bookRepository;
 
-    public DashboardService(BookService bookService) {
-        this.bookService = bookService;
+    public DashboardService(BookRepository bookRepository) {
+        this.bookRepository = bookRepository;
     }
 
     public ResponseEntity<ServiceResponse<DashboardDTO>> getAllInfo() {
-        try {
-            DashboardDTO dto = new DashboardDTO();
-            dto.setMostRead(bookService.dashboardMostReadBooks());
-            ServiceResponse<List<Loan>> response = new ServiceResponse<>("LOAD_LOAN_SUCCESS", localeHelper.i18n("loan.load-success"), loans);
-            return ResponseEntity.status(HttpStatus.OK).body(response);
-        } catch (RuntimeException e) {
-            logger.error(e.getMessage());
-            ServiceResponse<List<Loan>> response = new ServiceResponse<>("LOAD_LOAN_FAIL", localeHelper.i18n("loan.load-failed-error"));
-            return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(response);
-        }
+        DashboardDTO dto = new DashboardDTO();
+        dto.setMostRead(bookRepository.dashboardMostReadBooks());
+        //TODO: START HERE SEB
     }
 }
