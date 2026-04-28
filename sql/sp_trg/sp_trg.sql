@@ -32,6 +32,7 @@ BEGIN
     IF UPDATE(status_reservation)   -- cas UPDATE : le status a changé
        OR NOT EXISTS (SELECT 1 FROM deleted)  -- cas INSERT : deleted est vide
     BEGIN
+        UPDATE waiting_list SET rank_number = 0 WHERE status_reservation='CANCELLED';
         EXEC SP_recalculate_rank @bookId;
     END
 END;
