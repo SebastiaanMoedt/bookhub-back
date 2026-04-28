@@ -24,4 +24,9 @@ public class WaitingListJpaDao implements IWaitingListDao {
     public List<WaitingList> dashboardUserWaitingListPending(int userId) {
         return waitingListRepository.dashboardUserWaitingListPending(userId);
     }
+
+    @Override
+    public Integer nbResaEnCoursByUser(int userId) {
+        return waitingListRepository.nbResaEnCoursByUser(userId);
+    }
 }
