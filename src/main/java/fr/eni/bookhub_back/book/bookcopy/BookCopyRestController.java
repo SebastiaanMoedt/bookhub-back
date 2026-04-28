@@ -39,6 +39,17 @@ public class BookCopyRestController {
         }
     }
 
+    @PutMapping("/{id}/update")
+    public ResponseEntity<ServiceResponse<BookCopy>> updateBookCopy(@Valid @PathVariable String id, @RequestBody BookCopy bookCopy) {
+        try {
+            return bookCopyService.updateBookCopy(Integer.parseInt(id.trim()), bookCopy);
+        } catch (RuntimeException e) {
+            logger.error(e.getMessage());
+            ServiceResponse<BookCopy> response = new ServiceResponse<>("BOOK_COPY_UPDATE_FAILED", localeHelper.i18n("book-copy.update-failed-error"));
+            return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(response);
+        }
+    }
+
     @DeleteMapping("/{id}/delete")
     public ResponseEntity<ServiceResponse<BookCopy>> deleteBookCopy(@Valid @PathVariable String id) {
         try {

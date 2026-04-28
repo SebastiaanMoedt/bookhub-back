@@ -100,5 +100,7 @@ public class LoanService {
         }
         return null;
     }
+
+    // TODO : updateLoan = Retour d'un livre
 }
 

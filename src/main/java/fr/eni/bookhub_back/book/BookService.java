@@ -256,10 +256,6 @@ public class BookService {
             bookInDB.get().setCoverUrl(b.getCoverUrl().trim());
         }
 
-        // TODO: déplacer dans updateBookCopy
-        // Modifier l'état ?
-        // Modifier la disponibilité ?
-
         try {
             bookRepository.save(bookInDB.get());
             ServiceResponse<Book> response = new ServiceResponse<>("BOOK_UPDATE_SUCCESS", localeHelper.i18n("book.update-success"), b);

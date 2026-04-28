@@ -65,7 +65,7 @@ public class BookCopyService {
             bookCopyRepository.save(bookCopy);
             ServiceResponse<BookCopy> response =
                     new ServiceResponse<>("BOOK_COPY_CREATION_SUCCESS", localeHelper.i18n("book-copy.create-success"), bookCopy);
-            return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(response);
+            return ResponseEntity.status(HttpStatus.OK).body(response);
         } catch (RuntimeException e) {
             ServiceResponse<BookCopy> response =
                     new ServiceResponse<>("BOOK_COPY_CREATION_FAILED", e.getMessage());
@@ -73,16 +73,41 @@ public class BookCopyService {
         }
     }
 
-    // TODO: Tester cette méthode
-    public ResponseEntity<ServiceResponse<BookCopy>> deleteBookCopy(int id) {
+    public ResponseEntity<ServiceResponse<BookCopy>> updateBookCopy(int id, BookCopy bookCopy) {
         Optional<BookCopy> bookCopyInDB = bookCopyRepository.findById(id);
         if (bookCopyInDB.isEmpty()) {
             ServiceResponse<BookCopy> response = new ServiceResponse<>("BOOK_COPY_ID_DOESNT_EXIST", localeHelper.i18n("book-copy.id-doesnt-exist-error"));
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
         }
 
+        // Mettre à jour l'état
+        bookCopyInDB.get().setState(bookCopy.getState());
+
         try {
-            bookCopyRepository.deleteById(id);
+            bookCopyRepository.save(bookCopyInDB.get());
+            ServiceResponse<BookCopy> response = new ServiceResponse<>("BOOK_COPY_UPDATE_SUCCESS", localeHelper.i18n("book-copy.update-success"));
+            return ResponseEntity.status(HttpStatus.OK).body(response);
+        } catch (RuntimeException e) {
+            logger.error("BookCopyService updateBookCopy() error : {}", e.getMessage());
+            ServiceResponse<BookCopy> response = new ServiceResponse<>("BOOK_COPY_UPDATE_FAILED", localeHelper.i18n("book-copy.update-failed-error"));
+            return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(response);
+        }
+    }
+
+        public ResponseEntity<ServiceResponse<BookCopy>> deleteBookCopy(int id) {
+        Optional<BookCopy> bookCopyInDB = bookCopyRepository.findById(id);
+        if (bookCopyInDB.isEmpty()) {
+            ServiceResponse<BookCopy> response = new ServiceResponse<>("BOOK_COPY_ID_DOESNT_EXIST", localeHelper.i18n("book-copy.id-doesnt-exist-error"));
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+        }
+
+        if(!bookCopyInDB.get().isAvailable()) {
+            ServiceResponse<BookCopy> response = new ServiceResponse<>("BOOK_COPY_CANNOT_DELETE_COPY_IN_LOAN", localeHelper.i18n("book-copy.cant-delete-copy-in-loan-error"));
+            return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(response);
+        }
+
+        try {
+            bookCopyRepository.deleteCopyById(id);
             ServiceResponse<BookCopy> response = new ServiceResponse<>("BOOK_COPY_DELETE_SUCCESS", localeHelper.i18n("book-copy.delete-success"));
             return ResponseEntity.status(HttpStatus.OK).body(response);
         } catch (RuntimeException e) {
@@ -90,7 +115,5 @@ public class BookCopyService {
             ServiceResponse<BookCopy> response = new ServiceResponse<>("BOOK_COPY_DELETE_FAILED", localeHelper.i18n("book-copy.delete-failed-error"));
             return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(response);
         }
-
     }
-
 }
