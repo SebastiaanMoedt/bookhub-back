@@ -17,6 +17,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Service
 public class WaitingListService {
@@ -32,6 +33,18 @@ public class WaitingListService {
         this.userService = userService;
         this.waitingListDao = waitingListDao;
         this.lH = lH;
+    }
+
+    public ResponseEntity<ServiceResponse<List<WaitingList>>> dashboardUserWaitingListPending(Integer userId){
+        try {
+            List<WaitingList> books = waitingListDao.dashboardUserWaitingListPending(userId);
+            ServiceResponse<List<WaitingList>> response = new ServiceResponse<>("LOAD_WAITING_SUCCESS", lH.i18n("waitinglist.load-success"), books);
+            return ResponseEntity.status(HttpStatus.OK).body(response);
+        } catch (RuntimeException e) {
+            logger.error(e.getMessage());
+            ServiceResponse<List<WaitingList>> response = new ServiceResponse<>("LOAD_WAITING_FAIL", lH.i18n("waitinglist.load-failed-error"));
+            return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(response);
+        }
     }
 
     public ResponseEntity<ServiceResponse<ReservationDto>> addReservation(Integer bookToResa, Integer userId){

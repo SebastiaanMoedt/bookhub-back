@@ -22,14 +22,14 @@ public interface BookRepository extends JpaRepository<Book, Integer>, JpaSpecifi
 
     // Dashboard Lecteur : Livres lus
     @Query(value = "SELECT * FROM Dashboard_Book_Read_ByUser WHERE user_id=:userId", nativeQuery = true)
-    List<Loan> Dashboard_User_Book_Read_ByUser(@Param("userId") int userId);
+    List<Book> dashboardUserBookReadByUser(@Param("userId") int userId);
 
     // Top 10 Livres les + empruntés
     @Query(value = "SELECT TOP 10 * FROM Dashboard_Most_Read_Books ORDER BY nbLoans DESC", nativeQuery = true)
-    List<Loan> Dashboard_Most_Read_Books();
+    List<Book> dashboardMostReadBooks();
 
     // Total livres
     @Query(value = "SELECT * FROM Dashboard_NbTotal_Book", nativeQuery = true)
-    Integer Dashboard_NbTotal_Book();
+    Integer dashboardNbTotalBook();
 
 }

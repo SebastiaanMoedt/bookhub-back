@@ -41,6 +41,42 @@ public class BookService {
 
     private final static Logger logger = LoggerFactory.getLogger(BookService.class);
 
+    ResponseEntity<ServiceResponse<List<Book>>> dashboardUserBookReadByUser(Integer userId){
+        try {
+            List<Book> books = bookRepository.dashboardUserBookReadByUser(userId);
+            ServiceResponse<List<Book>> response = new ServiceResponse<>("LOAD_BOOK_SUCCESS", localeHelper.i18n("book.load-success"), books);
+            return ResponseEntity.status(HttpStatus.OK).body(response);
+        } catch (RuntimeException e) {
+            logger.error(e.getMessage());
+            ServiceResponse<List<Book>> response = new ServiceResponse<>("LOAD_BOOK_FAIL", localeHelper.i18n("book.load-failed-error"));
+            return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(response);
+        }
+    }
+
+    ResponseEntity<ServiceResponse<List<Book>>> dashboardMostReadBooks(){
+        try {
+            List<Book> books = bookRepository.dashboardMostReadBooks();
+            ServiceResponse<List<Book>> response = new ServiceResponse<>("LOAD_BOOK_SUCCESS", localeHelper.i18n("book.load-success"), books);
+            return ResponseEntity.status(HttpStatus.OK).body(response);
+        } catch (RuntimeException e) {
+            logger.error(e.getMessage());
+            ServiceResponse<List<Book>> response = new ServiceResponse<>("LOAD_BOOK_FAIL", localeHelper.i18n("book.load-failed-error"));
+            return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(response);
+        }
+    }
+
+    ResponseEntity<ServiceResponse<Integer>> dashboardNbTotalBook(){
+        try {
+            Integer nbBooks = bookRepository.dashboardNbTotalBook();
+            ServiceResponse<Integer> response = new ServiceResponse<>("LOAD_BOOK_SUCCESS", localeHelper.i18n("book.load-success"), nbBooks);
+            return ResponseEntity.status(HttpStatus.OK).body(response);
+        } catch (RuntimeException e) {
+            logger.error(e.getMessage());
+            ServiceResponse<Integer> response = new ServiceResponse<>("LOAD_BOOK_FAIL", localeHelper.i18n("book.load-failed-error"));
+            return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(response);
+        }
+    }
+
     public ResponseEntity<?> findBooks(int page, int size, String sortBy, String search, List<String> categories, String availability) {
 
         Specification<Book> spec = Specification.allOf(); // on prend toutes les lignes au départ !

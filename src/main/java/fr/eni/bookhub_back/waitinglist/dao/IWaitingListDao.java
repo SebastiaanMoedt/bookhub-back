@@ -6,5 +6,5 @@ import java.util.List;
 
 public interface IWaitingListDao {
     WaitingList save(WaitingList waitingList);
-    List<WaitingList> Dashboard_User_WaitingList_Pending(int userId);
+    List<WaitingList> dashboardUserWaitingListPending(int userId);
 }

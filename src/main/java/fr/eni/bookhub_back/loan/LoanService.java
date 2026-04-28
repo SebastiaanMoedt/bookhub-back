@@ -39,6 +39,54 @@ public class LoanService {
     @Autowired
     private LocaleHelper localeHelper;
 
+    ResponseEntity<ServiceResponse<List<Loan>>> dashboardUserLoanOngoing(Integer userId){
+        try {
+            List<Loan> loans = loanRepository.dashboardUserLoanOngoing(userId);
+            ServiceResponse<List<Loan>> response = new ServiceResponse<>("LOAD_LOAN_SUCCESS", localeHelper.i18n("loan.load-success"), loans);
+            return ResponseEntity.status(HttpStatus.OK).body(response);
+        } catch (RuntimeException e) {
+            logger.error(e.getMessage());
+            ServiceResponse<List<Loan>> response = new ServiceResponse<>("LOAD_LOAN_FAIL", localeHelper.i18n("loan.load-failed-error"));
+            return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(response);
+        }
+    }
+
+    ResponseEntity<ServiceResponse<List<Loan>>> dashboardBiblioLoanOngoing(){
+        try {
+            List<Loan> loans = loanRepository.dashboardBiblioLoanOngoing();
+            ServiceResponse<List<Loan>> response = new ServiceResponse<>("LOAD_LOAN_SUCCESS", localeHelper.i18n("loan.load-success"), loans);
+            return ResponseEntity.status(HttpStatus.OK).body(response);
+        } catch (RuntimeException e) {
+            logger.error(e.getMessage());
+            ServiceResponse<List<Loan>> response = new ServiceResponse<>("LOAD_LOAN_FAIL", localeHelper.i18n("loan.load-failed-error"));
+            return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(response);
+        }
+    }
+
+    ResponseEntity<ServiceResponse<List<Loan>>> dashboardUserLoanRetards(Integer userId){
+        try {
+            List<Loan> loans = loanRepository.dashboardUserLoanRetards(userId);
+            ServiceResponse<List<Loan>> response = new ServiceResponse<>("LOAD_LOAN_SUCCESS", localeHelper.i18n("loan.load-success"), loans);
+            return ResponseEntity.status(HttpStatus.OK).body(response);
+        } catch (RuntimeException e) {
+            logger.error(e.getMessage());
+            ServiceResponse<List<Loan>> response = new ServiceResponse<>("LOAD_LOAN_FAIL", localeHelper.i18n("loan.load-failed-error"));
+            return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(response);
+        }
+    }
+
+    ResponseEntity<ServiceResponse<List<Loan>>> dashboardBiblioLoanRetards(){
+        try {
+            List<Loan> loans = loanRepository.dashboardBiblioLoanRetards();
+            ServiceResponse<List<Loan>> response = new ServiceResponse<>("LOAD_LOAN_SUCCESS", localeHelper.i18n("loan.load-success"), loans);
+            return ResponseEntity.status(HttpStatus.OK).body(response);
+        } catch (RuntimeException e) {
+            logger.error(e.getMessage());
+            ServiceResponse<List<Loan>> response = new ServiceResponse<>("LOAD_LOAN_FAIL", localeHelper.i18n("loan.load-failed-error"));
+            return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(response);
+        }
+    }
+
     ResponseEntity<ServiceResponse<Loan>> reserverLivre(LoanDTO loanDTO){
 
         if (loanDTO.isbn == null || loanDTO.username == null) {
