@@ -8,6 +8,8 @@ import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 // POST /api/auth/register, POST /api/auth/login
 // GET /api/profile
 
@@ -32,4 +34,8 @@ public class UserRestController {
         return this.userService.login(user.getUsername(), user.getPassword());
     }
 
+    @GetMapping("/users")
+    public ResponseEntity<ServiceResponse<List<User>>> getAllUsers() {
+        return this.userService.findAllUsers();
+    }
 }

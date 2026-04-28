@@ -2,26 +2,27 @@ package fr.eni.bookhub_back.user.bll;
 
 import fr.eni.bookhub_back.common.ServiceResponse;
 import fr.eni.bookhub_back.locale.LocaleHelper;
+import fr.eni.bookhub_back.user.dao.jpa.UserJpaRepository;
 import fr.eni.bookhub_back.user.dto.AuthUserDto;
 import fr.eni.bookhub_back.user.bo.User;
 import fr.eni.bookhub_back.user.dao.IUserDao;
 import fr.eni.bookhub_back.user.dto.UserNonSensibleDto;
+import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestParam;
 
+import java.util.List;
 import java.util.Optional;
 
+@AllArgsConstructor
 @Service
 public class UserService {
 
     private final IUserDao userDao;
+    private final UserJpaRepository userJpaRepository;
     private final LocaleHelper lH;
-
-    UserService(IUserDao userDao, LocaleHelper lH /*, PasswordEncoder passwordEncoder*/) {
-        this.userDao = userDao;
-        this.lH = lH;
-    }
 
     private UserNonSensibleDto getLimitedUserData(User user) {
         UserNonSensibleDto dto = new UserNonSensibleDto();
@@ -65,6 +66,20 @@ public class UserService {
             return ResponseEntity.ok(response);
         } catch (RuntimeException e){
             ServiceResponse<User> response =
+                    new ServiceResponse<>("ERROR", e.getMessage());
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+        }
+    }
+
+    public ResponseEntity<ServiceResponse<List<User>>> findAllUsers() {
+        try {
+            List<User> users = userJpaRepository.findAll();
+
+            ServiceResponse<List<User>> response =
+                    new ServiceResponse<>("USERS_FOUND", lH.i18n("users.found"), users);
+            return ResponseEntity.ok(response);
+        } catch (RuntimeException e){
+            ServiceResponse<List<User>> response =
                     new ServiceResponse<>("ERROR", e.getMessage());
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
         }
