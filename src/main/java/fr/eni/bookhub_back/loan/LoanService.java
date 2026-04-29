@@ -8,6 +8,7 @@ import fr.eni.bookhub_back.common.ServiceResponse;
 import fr.eni.bookhub_back.locale.LocaleHelper;
 import fr.eni.bookhub_back.user.bo.User;
 import fr.eni.bookhub_back.user.dao.jpa.UserJpaRepository;
+import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,27 +17,20 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
+@AllArgsConstructor
 @Service
 public class LoanService {
 
     private final static Logger logger = LoggerFactory.getLogger(LoanService.class);
 
-    @Autowired
     LoanRepository loanRepository;
-
-    @Autowired
     BookRepository bookRepository;
-
-    @Autowired
     UserJpaRepository userRepository;
-
-    @Autowired
     BookCopyRepository bookCopyRepository;
-
-    @Autowired
     private LocaleHelper localeHelper;
 
     ResponseEntity<ServiceResponse<List<Loan>>> dashboardUserLoanOngoing(Integer userId){
@@ -138,6 +132,37 @@ public class LoanService {
             ServiceResponse<Loan> response = new ServiceResponse<>("LOAN_SAVE_FAILED", localeHelper.i18n("loan.save-failed-error"));
             return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(response);
         }
+    }
+
+    ResponseEntity<ServiceResponse<Loan>> returnBook(Loan loan, BookCopy bookCopy) {
+        Optional<Loan> loanInDB = loanRepository.findById(loan.getId());
+
+        if (loanInDB.isEmpty()) {
+            ServiceResponse<Loan> response = new ServiceResponse<>("LOAN_NOT_FOUND", localeHelper.i18n("loan.not-found"));
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+        }
+
+        Optional<BookCopy> bookCopyInDB = bookCopyRepository.findById(bookCopy.getId());
+
+        if (bookCopyInDB.isEmpty()) {
+            ServiceResponse<Loan> response = new ServiceResponse<>("BOOK_COPY_NOT_FOUND", localeHelper.i18n("book-copy.not-found"));
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+        }
+
+        // TODO: uncoment
+        //loanInDB.get().setDateReturned(LocalDateTime.now());
+
+        // TODO: modifier la response
+        ServiceResponse<Loan> response = new ServiceResponse<>("BOOK_COPY_NOT_FOUND", localeHelper.i18n("book-copy.not-found"));
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+        // récupérer loanById()
+        // set dateReturned = date.now()
+        // save loan
+        // récupérer bookCopy avec bookCopyId
+        // set etat bookCopy à l'état reçu
+        // save bookCopy
+
+
     }
 
     BookCopy checkAvailable(List<BookCopy> bookCopies){

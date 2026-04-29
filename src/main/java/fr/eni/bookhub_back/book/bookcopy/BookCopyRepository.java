@@ -15,4 +15,6 @@ public interface BookCopyRepository extends JpaRepository<BookCopy, Integer> {
     @Modifying
     @Query("DELETE FROM BookCopy bc WHERE bc.id = :id")
     void deleteCopyById(@Param("id") int id);
+
+    Integer book(Book book);
 }

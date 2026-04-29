@@ -2,18 +2,23 @@ package fr.eni.bookhub_back.loan;
 import fr.eni.bookhub_back.book.Book;
 import fr.eni.bookhub_back.book.bookcopy.BookCopy;
 import fr.eni.bookhub_back.common.ServiceResponse;
+import fr.eni.bookhub_back.locale.LocaleHelper;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
+@AllArgsConstructor
 @CrossOrigin
 @RestController
 public class LoanRestController {
 
-    @Autowired
+    private LocaleHelper localeHelper;
     LoanService loanService;
 
     @PostMapping("/api/books/loan")
@@ -62,6 +67,16 @@ public class LoanRestController {
             return loanService.dashboardBiblioLoanRetards();
         } catch (RuntimeException e){
             ServiceResponse<List<Loan>> response = new ServiceResponse<>("LOAD_LOAN_FAILED", "{loan.load-fail}");
+            return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(response);
+        }
+    }
+
+    @PostMapping("loans/return")
+    public ResponseEntity<ServiceResponse<Loan>> returnBook(Loan loan, BookCopy bookCopy) {
+        try {
+            return loanService.returnBook(loan, bookCopy);
+        } catch (RuntimeException e){
+            ServiceResponse<Loan> response = new ServiceResponse<>("RETURN_LOAN_FAILED", localeHelper.i18n("loan.return-failed"));
             return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(response);
         }
     }
