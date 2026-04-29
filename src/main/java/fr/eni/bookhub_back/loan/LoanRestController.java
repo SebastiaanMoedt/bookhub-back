@@ -2,6 +2,8 @@ package fr.eni.bookhub_back.loan;
 import fr.eni.bookhub_back.book.Book;
 import fr.eni.bookhub_back.book.bookcopy.BookCopy;
 import fr.eni.bookhub_back.common.ServiceResponse;
+import fr.eni.bookhub_back.dashboard.DashboardDTO;
+import fr.eni.bookhub_back.dashboard.DashboardService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,6 +18,8 @@ public class LoanRestController {
 
     @Autowired
     LoanService loanService;
+    @Autowired
+    private DashboardService dashboardService;
 
     @PostMapping("/books/loan")
     public ResponseEntity<ServiceResponse<Loan>> reserverLivre(@RequestBody LoanDTO loanDTO){
@@ -63,6 +67,16 @@ public class LoanRestController {
             return loanService.dashboardUserLoanRetards(userId);
         } catch (RuntimeException e){
             ServiceResponse<List<Loan>> response = new ServiceResponse<>("LOAD_LOAN_FAILED", "{loan.load-fail}");
+            return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(response);
+        }
+    }
+
+    @GetMapping("/dashboard/loadAllBiblio")
+    public ResponseEntity<ServiceResponse<DashboardDTO>> dashboardLoadAllBiblio(){
+        try {
+            return dashboardService.getAllInfo();
+        } catch (RuntimeException e){
+            ServiceResponse<DashboardDTO> response = new ServiceResponse<>("LOAD_LOAN_FAILED", "{dashboard.load-fail}");
             return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(response);
         }
     }
