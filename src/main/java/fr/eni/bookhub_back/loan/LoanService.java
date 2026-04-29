@@ -27,10 +27,10 @@ public class LoanService {
 
     private final static Logger logger = LoggerFactory.getLogger(LoanService.class);
 
-    LoanRepository loanRepository;
-    BookRepository bookRepository;
-    UserJpaRepository userRepository;
-    BookCopyRepository bookCopyRepository;
+    private LoanRepository loanRepository;
+    private BookRepository bookRepository;
+    private UserJpaRepository userRepository;
+    private BookCopyRepository bookCopyRepository;
     private LocaleHelper localeHelper;
 
 
@@ -162,20 +162,20 @@ public class LoanService {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
         }
 
-        // TODO: uncoment
-        //loanInDB.get().setDateReturned(LocalDateTime.now());
+        loanInDB.get().setDateReturned(LocalDate.now());
+        bookCopyInDB.get().setState(bookCopy.getState());
 
-        // TODO: modifier la response
-        ServiceResponse<Loan> response = new ServiceResponse<>("BOOK_COPY_NOT_FOUND", localeHelper.i18n("book-copy.not-found"));
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
-        // récupérer loanById()
-        // set dateReturned = date.now()
-        // save loan
-        // récupérer bookCopy avec bookCopyId
-        // set etat bookCopy à l'état reçu
-        // save bookCopy
+       try {
+           loanRepository.save(loanInDB.get());
+           bookCopyRepository.save(bookCopyInDB.get());
 
-
+           ServiceResponse<Loan> response = new ServiceResponse<>("LOAN_RETURN_SUCCESS", localeHelper.i18n("loan.return-success"));
+           return ResponseEntity.status(HttpStatus.OK).body(response);
+       } catch (RuntimeException e) {
+           logger.error(e.getMessage());
+           ServiceResponse<Loan> response = new ServiceResponse<>("LOAN_RETURN_FAILED", localeHelper.i18n("loan.return-failed"));
+           return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(response);
+       }
     }
 
     BookCopy checkAvailable(List<BookCopy> bookCopies){
@@ -186,7 +186,5 @@ public class LoanService {
         }
         return null;
     }
-
-    // TODO : updateLoan = Retour d'un livre
 }
 
