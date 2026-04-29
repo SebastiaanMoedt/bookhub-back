@@ -41,7 +41,7 @@ public class BookService {
 
     private final static Logger logger = LoggerFactory.getLogger(BookService.class);
 
-    ResponseEntity<ServiceResponse<List<Book>>> dashboardMostReadBooks(){
+    public ResponseEntity<ServiceResponse<List<Book>>> dashboardMostReadBooks(){
         try {
             List<Book> books = bookRepository.dashboardMostReadBooks();
             ServiceResponse<List<Book>> response = new ServiceResponse<>("LOAD_BOOK_SUCCESS", localeHelper.i18n("book.load-success"), books);

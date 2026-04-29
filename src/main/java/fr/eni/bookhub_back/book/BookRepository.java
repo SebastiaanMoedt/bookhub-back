@@ -1,5 +1,6 @@
 package fr.eni.bookhub_back.book;
 
+import fr.eni.bookhub_back.book.bookcopy.BookCopy;
 import fr.eni.bookhub_back.loan.Loan;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -28,4 +29,5 @@ public interface BookRepository extends JpaRepository<Book, Integer>, JpaSpecifi
     @Query(value = "SELECT * FROM Dashboard_NbTotal_Book", nativeQuery = true)
     Integer dashboardNbTotalBook();
 
+    Book getByCopiesContaining(BookCopy bookcopy);
 }

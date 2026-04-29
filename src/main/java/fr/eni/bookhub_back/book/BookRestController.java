@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@CrossOrigin // Restreindre à notre frontend
+@CrossOrigin
 @RestController
 @RequestMapping("/api")
 @AllArgsConstructor
