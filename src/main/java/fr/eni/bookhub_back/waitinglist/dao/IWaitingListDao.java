@@ -7,4 +7,5 @@ import java.util.List;
 public interface IWaitingListDao {
     WaitingList save(WaitingList waitingList);
     List<WaitingList> dashboardUserWaitingListPending(int userId);
+    Integer nbResaEnCoursByUser(int userId);
 }

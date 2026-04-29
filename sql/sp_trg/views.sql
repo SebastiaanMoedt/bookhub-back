@@ -21,15 +21,24 @@ GO
 CREATE OR ALTER VIEW Dashboard_WaitingList_Pending
 AS SELECT * FROM waiting_list WHERE status_reservation='PENDING';
 
-/* --- Livres lus--- */
+/* --- Livres lus par le passé --- */
+-- GO
+-- CREATE OR ALTER VIEW Dashboard_Book_Read_ByUser
+-- AS
+-- SELECT b.id, b.author, b.category, b.cover_url, b.description, b.isbn, b.title, l.date_loaned, l.user_id
+-- FROM book b
+--          INNER JOIN book_copy c ON b.id = c.book_id
+--          INNER JOIN loan l ON l.copy_id = c.id
+-- WHERE l.date_loaned IS NOT NULL ;
+
 GO
-CREATE OR ALTER VIEW Dashboard_Book_Read_ByUser
+CREATE OR ALTER VIEW Dashboard_BookLoan_Read_ByUser
 AS
-SELECT b.id, b.author, b.category, b.cover_url, b.description, b.isbn, b.title, l.date_loaned, l.user_id
+SELECT l.*
 FROM book b
-         INNER JOIN book_copy c ON b.id = c.book_id
-         INNER JOIN loan l ON l.copy_id = c.id
-WHERE l.date_loaned IS NOT NULL ;
+INNER JOIN book_copy c ON b.id = c.book_id
+INNER JOIN loan l ON l.copy_id = c.id
+WHERE l.date_loaned IS NOT NULL AND l.date_returned IS NOT NULL ;
 
 /* --- Total livres --- */
 GO
@@ -38,7 +47,7 @@ AS
 SELECT COUNT(*) AS nbBook
 FROM book AS b
          LEFT JOIN book_copy as c ON b.id=c.book_id
-WHERE NOT(state = 'RETIRED');
+WHERE NOT(state = 'RETIRED' OR state = 'MISSING');
 
 /* --- Top 10 Livres les + empruntés */
 GO

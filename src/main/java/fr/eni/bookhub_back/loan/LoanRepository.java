@@ -1,5 +1,6 @@
 package fr.eni.bookhub_back.loan;
 
+import fr.eni.bookhub_back.book.Book;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -23,4 +24,8 @@ public interface LoanRepository extends JpaRepository<Loan, Integer> {
     // Dashboard Bibliothécaire : Retards
     @Query(value = "SELECT * FROM Dashboard_Loan_Retards", nativeQuery = true)
     List<Loan> dashboardBiblioLoanRetards();
+
+    // Dashboard Lecteur : Livres lus
+    @Query(value = "SELECT * FROM Dashboard_BookLoan_Read_ByUser WHERE user_id=:userId", nativeQuery = true)
+    List<Loan> dashboardUserBookLoanReadByUser(@Param("userId") int userId);
 }

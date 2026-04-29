@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@CrossOrigin(origins = "http://localhost:4200") // Restreindre à notre frontend
+@CrossOrigin // Restreindre à notre frontend
 @RestController
 @RequestMapping("/api")
 @AllArgsConstructor
@@ -80,16 +80,6 @@ public class BookRestController {
 //        }
 //    }
 
-    @GetMapping("/dashboard/dashboardUserBookReadByUser")
-    public ResponseEntity<ServiceResponse<List<Book>>> dashboardUserBookReadByUser(@RequestParam Integer userId){
-        try {
-            return bookService.dashboardUserBookReadByUser(userId);
-        } catch (RuntimeException e){
-            ServiceResponse<List<Book>> response = new ServiceResponse<>("LOAD_BOOK_FAILED", "{book.load-fail}");
-            return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(response);
-        }
-    }
-
     @GetMapping("/dashboard/dashboardMostReadBooks")
     public ResponseEntity<ServiceResponse<List<Book>>> dashboardMostReadBooks(){
         try {
@@ -109,9 +99,4 @@ public class BookRestController {
             return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(response);
         }
     }
-
-//    @GetMapping("/api/books/loaned")
-//    public ResponseEntity<ServiceResponse<List<Book>>> getAllLoanedBooksByUsername(String username){
-//        return bookService.findLoanedBooksByUsername(username);
-//    }
 }

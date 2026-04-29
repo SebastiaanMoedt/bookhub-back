@@ -13,4 +13,7 @@ public interface WaitingListJpaRepository extends JpaRepository<WaitingList, Int
     // Dashboard Lecteur: Réservations
     @Query(value = "SELECT * FROM Dashboard_WaitingList_Pending WHERE user_id=:userId", nativeQuery = true)
     List<WaitingList> dashboardUserWaitingListPending(@Param("userId") int userId);
+
+    @Query(value = "SELECT COUNT(*) AS nbResaEnCours FROM waiting_list WHERE user_id=:userId AND status_reservation='PENDING'", nativeQuery = true)
+    Integer nbResaEnCoursByUser(int userId);
 }

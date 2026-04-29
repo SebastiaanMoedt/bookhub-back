@@ -16,12 +16,13 @@ import java.util.List;
 @AllArgsConstructor
 @CrossOrigin
 @RestController
+@RequestMapping("/api")
 public class LoanRestController {
 
     private LocaleHelper localeHelper;
     LoanService loanService;
 
-    @PostMapping("/api/books/loan")
+    @PostMapping("/books/loan")
     public ResponseEntity<ServiceResponse<Loan>> reserverLivre(@RequestBody LoanDTO loanDTO){
         try {
             return loanService.reserverLivre(loanDTO);
@@ -31,7 +32,7 @@ public class LoanRestController {
         }
     }
 
-    @GetMapping("api/dashboard/dashboardUserLoanOngoing")
+    @GetMapping("/dashboard/dashboardUserLoanOngoing")
     public ResponseEntity<ServiceResponse<List<Loan>>> dashboardUserLoanOngoing(@RequestParam Integer userId){
         try {
             return loanService.dashboardUserLoanOngoing(userId);
@@ -41,7 +42,17 @@ public class LoanRestController {
         }
     }
 
-    @GetMapping("api/dashboard/dashboardBiblioLoanOngoing")
+    @GetMapping("/dashboard/dashboardUserBookLoanReadByUser")
+    public ResponseEntity<ServiceResponse<List<Loan>>> dashboardUserBookLoanReadByUser(@RequestParam Integer userId){
+        try {
+            return loanService.dashboardUserBookLoanReadByUser(userId);
+        } catch (RuntimeException e){
+            ServiceResponse<List<Loan>> response = new ServiceResponse<>("LOAD_LOAN_FAILED", "{loan.load-fail}");
+            return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(response);
+        }
+    }
+
+    @GetMapping("/dashboard/dashboardBiblioLoanOngoing")
     public ResponseEntity<ServiceResponse<List<Loan>>> dashboardBiblioLoanOngoing(){
         try {
             return loanService.dashboardBiblioLoanOngoing();
@@ -51,7 +62,7 @@ public class LoanRestController {
         }
     }
 
-    @GetMapping("api/dashboard/dashboardUserLoanRetards")
+    @GetMapping("/dashboard/dashboardUserLoanRetards")
     public ResponseEntity<ServiceResponse<List<Loan>>> dashboardUserLoanRetards(@RequestParam Integer userId){
         try {
             return loanService.dashboardUserLoanRetards(userId);
@@ -61,7 +72,7 @@ public class LoanRestController {
         }
     }
 
-    @GetMapping("api/dashboard/dashboardBiblioLoanRetards")
+    @GetMapping("/dashboard/dashboardBiblioLoanRetards")
     public ResponseEntity<ServiceResponse<List<Loan>>> dashboardBiblioLoanRetards(){
         try {
             return loanService.dashboardBiblioLoanRetards();
