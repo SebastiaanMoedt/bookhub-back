@@ -62,6 +62,7 @@ public class BookCopyService {
 
         try {
             bookCopy.setBook(book.get());
+            bookCopy.setAvailable(true);
             bookCopyRepository.save(bookCopy);
             ServiceResponse<BookCopy> response =
                     new ServiceResponse<>("BOOK_COPY_CREATION_SUCCESS", localeHelper.i18n("book-copy.create-success"), bookCopy);
