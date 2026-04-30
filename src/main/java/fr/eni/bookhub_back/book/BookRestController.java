@@ -69,16 +69,16 @@ public class BookRestController {
         }
     }
 
-//    @DeleteMapping("/books/{id}/delete")
-//    public ResponseEntity<ServiceResponse<Book>> deleteBook(@Valid @PathVariable String id) {
-//        try {
-//            return bookService.deleteBook(Integer.parseInt(id.trim()));
-//        } catch (RuntimeException e) {
-//            logger.error(e.getMessage());
-//            ServiceResponse<Book> response = new ServiceResponse<>("BOOK_DELETE_FAILED", localeHelper.i18n("book.delete-failed-error"));
-//            return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(response);
-//        }
-//    }
+    @DeleteMapping("/books/{id}/delete")
+    public ResponseEntity<ServiceResponse<Book>> deleteBook(@Valid @PathVariable String id) {
+        try {
+            return bookService.deleteBook(Integer.parseInt(id.trim()));
+        } catch (RuntimeException e) {
+            logger.error(e.getMessage());
+            ServiceResponse<Book> response = new ServiceResponse<>("BOOK_DELETE_FAILED", localeHelper.i18n("book.delete-failed-error"));
+            return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(response);
+        }
+    }
 
     @GetMapping("/dashboard/dashboardMostReadBooks")
     public ResponseEntity<ServiceResponse<List<Book>>> dashboardMostReadBooks(){
